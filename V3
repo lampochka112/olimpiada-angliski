@@ -1,0 +1,1564 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Космические Пары: Исследование Солнечной системы</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Orbitron', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: radial-gradient(ellipse at center, #0a0a2a 0%, #000010 100%);
+            color: #e0e0ff;
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Анимированный космический фон */
+        .space-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+        }
+        
+        .nebula {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.3;
+        }
+        
+        .nebula-1 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, #4a006d, transparent);
+            top: 10%;
+            left: 5%;
+            animation: float 25s infinite ease-in-out;
+        }
+        
+        .nebula-2 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, #003c8d, transparent);
+            top: 60%;
+            right: 10%;
+            animation: float 30s infinite ease-in-out reverse;
+        }
+        
+        .nebula-3 {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, #008d7a, transparent);
+            bottom: 10%;
+            left: 20%;
+            animation: float 20s infinite ease-in-out;
+        }
+        
+        .pulsar {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background-color: white;
+            border-radius: 50%;
+            box-shadow: 0 0 20px 5px rgba(255, 255, 255, 0.7);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -20px) scale(1.05); }
+            66% { transform: translate(-20px, 15px) scale(0.95); }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.5); }
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 25px;
+            background: linear-gradient(135deg, rgba(16, 20, 60, 0.9) 0%, rgba(8, 12, 40, 0.9) 100%);
+            border-radius: 20px;
+            border: 1px solid rgba(100, 150, 255, 0.3);
+            box-shadow: 0 0 30px rgba(0, 50, 255, 0.2), 
+                        inset 0 0 30px rgba(100, 150, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1446776653964-20c1d3a81b06?q=80&w=1471&auto=format&fit=crop') center/cover;
+            opacity: 0.1;
+            z-index: -1;
+        }
+        
+        h1 {
+            font-size: 3.2rem;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #00d4ff, #0080ff, #8a4dff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 20px rgba(100, 150, 255, 0.5);
+            letter-spacing: 2px;
+            font-weight: 800;
+            position: relative;
+            display: inline-block;
+        }
+        
+        h1::after {
+            content: "";
+            position: absolute;
+            bottom: -5px;
+            left: 10%;
+            width: 80%;
+            height: 3px;
+            background: linear-gradient(to right, transparent, #00d4ff, #8a4dff, transparent);
+            border-radius: 3px;
+        }
+        
+        .subtitle {
+            font-size: 1.3rem;
+            color: #a0b0ff;
+            margin-bottom: 20px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.5;
+        }
+        
+        .game-area {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        @media (max-width: 1100px) {
+            .game-area {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .game-info {
+            background: linear-gradient(135deg, rgba(20, 25, 70, 0.85) 0%, rgba(10, 15, 40, 0.85) 100%);
+            padding: 25px;
+            border-radius: 18px;
+            border: 1px solid rgba(100, 150, 255, 0.3);
+            box-shadow: 0 0 25px rgba(0, 50, 255, 0.15), 
+                        inset 0 0 20px rgba(100, 150, 255, 0.1);
+            backdrop-filter: blur(10px);
+            margin-bottom: 30px;
+        }
+        
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+        
+        @media (max-width: 768px) {
+            .stats-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        .stat-box {
+            text-align: center;
+            padding: 20px 15px;
+            background: rgba(10, 15, 40, 0.7);
+            border-radius: 12px;
+            border: 1px solid rgba(100, 150, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .stat-box:hover {
+            transform: translateY(-5px);
+            border-color: rgba(100, 150, 255, 0.5);
+            box-shadow: 0 5px 15px rgba(0, 50, 255, 0.2);
+        }
+        
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #6d9eff;
+            text-shadow: 0 0 15px rgba(109, 158, 255, 0.7);
+            margin-bottom: 5px;
+            font-family: 'Orbitron', monospace;
+        }
+        
+        .stat-label {
+            font-size: 0.95rem;
+            color: #a0b0ff;
+            letter-spacing: 1px;
+        }
+        
+        .attempts-left {
+            color: #ff6b6b;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            background: linear-gradient(to right, #2a3f9e, #4a2f9e);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 10px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            flex: 1;
+            min-width: 150px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        button::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+        
+        button:hover::before {
+            left: 100%;
+        }
+        
+        button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            background: linear-gradient(to right, #3a4fae, #5a3fae);
+        }
+        
+        button:active {
+            transform: translateY(-2px);
+        }
+        
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+        
+        .game-board {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        @media (min-width: 768px) {
+            .game-board {
+                grid-template-columns: repeat(6, 1fr);
+            }
+        }
+        
+        @media (min-width: 1200px) {
+            .game-board {
+                grid-template-columns: repeat(8, 1fr);
+            }
+        }
+        
+        .card {
+            aspect-ratio: 3/4;
+            background: linear-gradient(145deg, rgba(26, 31, 77, 0.9), rgba(19, 24, 58, 0.9));
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+            border: 2px solid rgba(100, 150, 255, 0.15);
+            overflow: hidden;
+        }
+        
+        .card::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: rotate(45deg);
+            transition: 0.5s;
+        }
+        
+        .card:hover::before {
+            left: 50%;
+        }
+        
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+        
+        .card.matched {
+            border-color: #4CAF50;
+            box-shadow: 0 0 25px rgba(76, 175, 80, 0.6);
+        }
+        
+        .card.matched::after {
+            content: "✓";
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #4CAF50;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            z-index: 10;
+        }
+        
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        
+        .card-front {
+            background: linear-gradient(145deg, rgba(42, 47, 109, 0.9), rgba(26, 31, 77, 0.9));
+            transform: rotateY(180deg);
+            padding: 10px;
+        }
+        
+        .card-back {
+            background: linear-gradient(145deg, #252a5d, #151a3a);
+            color: #6d9eff;
+            font-size: 3rem;
+        }
+        
+        .card-back i {
+            text-shadow: 0 0 20px rgba(109, 158, 255, 0.8);
+        }
+        
+        .card-image {
+            width: 85%;
+            height: 85%;
+            object-fit: contain;
+            border-radius: 5px;
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+        
+        .card-image.fallback {
+            object-fit: cover;
+        }
+        
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+        
+        .fact-panel, .faq-panel {
+            background: linear-gradient(135deg, rgba(20, 25, 70, 0.85) 0%, rgba(10, 15, 40, 0.85) 100%);
+            border-radius: 18px;
+            border: 1px solid rgba(100, 150, 255, 0.3);
+            box-shadow: 0 0 25px rgba(0, 50, 255, 0.15), 
+                        inset 0 0 20px rgba(100, 150, 255, 0.1);
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+        }
+        
+        .panel-header {
+            background: linear-gradient(to right, rgba(42, 63, 158, 0.9), rgba(74, 47, 158, 0.9));
+            padding: 18px 25px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .panel-content {
+            padding: 25px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .fact-title {
+            color: #6d9eff;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .fact-content {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #d0d8ff;
+        }
+        
+        .close-fact {
+            background: rgba(100, 150, 255, 0.2);
+            color: #a0b0ff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s;
+            width: 100%;
+        }
+        
+        .close-fact:hover {
+            background: rgba(100, 150, 255, 0.4);
+        }
+        
+        .faq-content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .planet-item {
+            background: rgba(10, 15, 40, 0.7);
+            border-radius: 10px;
+            padding: 15px;
+            border: 1px solid rgba(100, 150, 255, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .planet-item:hover {
+            background: rgba(20, 25, 70, 0.9);
+            border-color: rgba(100, 150, 255, 0.5);
+            transform: translateX(5px);
+        }
+        
+        .planet-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+        
+        .planet-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .planet-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #a0b0ff;
+        }
+        
+        .planet-fact {
+            font-size: 0.95rem;
+            color: #c0c8ff;
+            line-height: 1.5;
+            display: none;
+        }
+        
+        .planet-item.active .planet-fact {
+            display: block;
+        }
+        
+        .planet-item.active .planet-icon {
+            transform: rotate(90deg);
+        }
+        
+        .win-message {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s ease;
+        }
+        
+        .win-message.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .win-content {
+            background: linear-gradient(135deg, rgba(26, 31, 77, 0.95), rgba(42, 47, 109, 0.95));
+            padding: 50px;
+            border-radius: 25px;
+            text-align: center;
+            max-width: 600px;
+            width: 90%;
+            border: 2px solid rgba(100, 150, 255, 0.5);
+            box-shadow: 0 0 50px rgba(100, 150, 255, 0.4);
+            transform: scale(0.8);
+            transition: transform 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .win-message.active .win-content {
+            transform: scale(1);
+        }
+        
+        .win-content::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, #00d4ff, #0080ff, #8a4dff);
+        }
+        
+        .win-content h2 {
+            font-size: 2.8rem;
+            color: #6d9eff;
+            margin-bottom: 20px;
+            text-shadow: 0 0 15px rgba(109, 158, 255, 0.7);
+        }
+        
+        .win-content p {
+            font-size: 1.3rem;
+            margin-bottom: 30px;
+            color: #d0d8ff;
+        }
+        
+        .win-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 40px;
+            background: rgba(10, 15, 40, 0.7);
+            padding: 20px;
+            border-radius: 15px;
+        }
+        
+        .game-over-message {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s ease;
+        }
+        
+        .game-over-message.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .game-over-content {
+            background: linear-gradient(135deg, rgba(77, 31, 31, 0.95), rgba(109, 42, 42, 0.95));
+            padding: 50px;
+            border-radius: 25px;
+            text-align: center;
+            max-width: 600px;
+            width: 90%;
+            border: 2px solid rgba(255, 100, 100, 0.5);
+            box-shadow: 0 0 50px rgba(255, 100, 100, 0.4);
+            transform: scale(0.8);
+            transition: transform 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .game-over-message.active .game-over-content {
+            transform: scale(1);
+        }
+        
+        .game-over-content::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, #ff6b6b, #ff8e53, #ff6b6b);
+        }
+        
+        .game-over-content h2 {
+            font-size: 2.8rem;
+            color: #ff6b6b;
+            margin-bottom: 20px;
+            text-shadow: 0 0 15px rgba(255, 107, 107, 0.7);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #8090cc;
+            font-size: 0.9rem;
+            padding-top: 20px;
+            border-top: 1px solid rgba(100, 150, 255, 0.2);
+        }
+        
+        /* Анимации */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 10px rgba(109, 158, 255, 0.5); }
+            50% { box-shadow: 0 0 25px rgba(109, 158, 255, 0.8); }
+        }
+        
+        .glowing {
+            animation: glow 2s infinite;
+        }
+        
+        /* Полоса прогресса для попыток */
+        .progress-container {
+            height: 10px;
+            background: rgba(10, 15, 40, 0.7);
+            border-radius: 5px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(to right, #4CAF50, #FFC107, #FF5722, #F44336);
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+        
+        .image-instructions {
+            background: rgba(20, 25, 70, 0.85);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+            border: 1px dashed rgba(100, 150, 255, 0.5);
+        }
+        
+        .image-instructions h3 {
+            color: #6d9eff;
+            margin-bottom: 10px;
+        }
+        
+        .image-instructions ol {
+            padding-left: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .image-instructions li {
+            margin-bottom: 8px;
+            color: #d0d8ff;
+        }
+        
+        .image-url-input {
+            width: 100%;
+            padding: 10px;
+            background: rgba(10, 15, 40, 0.8);
+            border: 1px solid rgba(100, 150, 255, 0.3);
+            border-radius: 6px;
+            color: white;
+            margin-bottom: 10px;
+        }
+        
+        .test-image-btn {
+            background: rgba(100, 150, 255, 0.3);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .test-image-btn:hover {
+            background: rgba(100, 150, 255, 0.5);
+        }
+        
+        .image-preview {
+            width: 100%;
+            max-width: 200px;
+            margin-top: 10px;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .image-preview.show {
+            display: block;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="space-bg" id="space-bg"></div>
+    
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-rocket"></i> КОСМИЧЕСКИЕ ПАРЫ</h1>
+            <p class="subtitle">Исследуйте Солнечную систему, находя пары планет и созвездий. У вас есть ограниченное количество попыток! Каждая найденная пара откроет интересные факты о космосе.</p>
+        </header>
+        
+        <div class="game-area">
+            <div class="game-column">
+                <div class="game-info">
+                    <div class="stats-container">
+                        <div class="stat-box">
+                            <div class="stat-value" id="moves">0</div>
+                            <div class="stat-label">ХОДЫ</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-value" id="timer">00:00</div>
+                            <div class="stat-label">ВРЕМЯ</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-value" id="matches">0/8</div>
+                            <div class="stat-label">НАЙДЕНО</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-value" id="attempts">10</div>
+                            <div class="stat-label">ПОПЫТКИ</div>
+                            <div class="progress-container">
+                                <div class="progress-bar" id="progress-bar" style="width: 100%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="controls">
+                        <button id="reset-btn">
+                            <i class="fas fa-redo"></i> НОВАЯ ИГРА
+                        </button>
+                        <button id="hint-btn">
+                            <i class="fas fa-lightbulb"></i> ПОДСКАЗКА
+                        </button>
+                        <button id="faq-toggle">
+                            <i class="fas fa-book"></i> О ПЛАНЕТАХ
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="game-board" id="game-board">
+                    <!-- Карточки будут сгенерированы здесь -->
+                </div>
+            </div>
+            
+            <div class="sidebar">
+                <div class="fact-panel" id="fact-panel">
+                    <div class="panel-header">
+                        <i class="fas fa-info-circle"></i>
+                        <span>КОСМИЧЕСКИЙ ФАКТ</span>
+                    </div>
+                    <div class="panel-content">
+                        <div class="fact-title" id="fact-title">Откройте пару карточек</div>
+                        <div class="fact-content" id="fact-content">
+                            Находите пары одинаковых карточек с планетами и созвездиями, чтобы узнать интересные факты о них.
+                        </div>
+                        <button class="close-fact" id="close-fact">Закрыть</button>
+                    </div>
+                </div>
+                
+                <div class="faq-panel" id="faq-panel">
+                    <div class="panel-header">
+                        <i class="fas fa-globe-americas"></i>
+                        <span>ПЛАНЕТЫ СОЛНЕЧНОЙ СИСТЕМЫ</span>
+                    </div>
+                    <div class="panel-content">
+                        <div class="faq-content" id="faq-content">
+                            <!-- FAQ о планетах будет добавлено через JS -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="image-instructions">
+                    <h3><i class="fas fa-image"></i> Как добавить свои изображения:</h3>
+                    <ol>
+                        <li>Найдите картинки планет в интернете</li>
+                        <li>Скопируйте URL изображения (адрес картинки)</li>
+                        <li>Вставьте URL в поле ниже для тестирования</li>
+                        <li>Если картинка отображается - скопируйте URL</li>
+                        <li>Замените URL в коде JavaScript (массив cardData)</li>
+                    </ol>
+                    <input type="text" class="image-url-input" id="test-image-url" placeholder="Вставьте URL изображения для теста">
+                    <button class="test-image-btn" id="test-image-btn">Проверить изображение</button>
+                    <img class="image-preview" id="image-preview" alt="Предпросмотр">
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Космическая игра "Планетарные Пары" | Ограниченное количество попыток делает игру сложнее и интереснее!</p>
+        </footer>
+    </div>
+    
+    <div class="win-message" id="win-message">
+        <div class="win-content">
+            <h2><i class="fas fa-trophy"></i> ПОБЕДА!</h2>
+            <p>Вы успешно исследовали Солнечную систему!</p>
+            <div class="win-stats">
+                <div class="stat-box">
+                    <div class="stat-value" id="win-time">00:00</div>
+                    <div class="stat-label">ВРЕМЯ</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="win-moves">0</div>
+                    <div class="stat-label">ХОДЫ</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="win-attempts-left">0</div>
+                    <div class="stat-label">ПОПЫТКИ ОСТАЛОСЬ</div>
+                </div>
+            </div>
+            <button id="play-again-btn">
+                <i class="fas fa-play"></i> ИГРАТЬ СНОВА
+            </button>
+        </div>
+    </div>
+    
+    <div class="game-over-message" id="game-over-message">
+        <div class="game-over-content">
+            <h2><i class="fas fa-skull-crossbones"></i> ИГРА ОКОНЧЕНА</h2>
+            <p>Вы исчерпали все попытки! Попробуйте снова.</p>
+            <div class="win-stats">
+                <div class="stat-box">
+                    <div class="stat-value" id="lose-time">00:00</div>
+                    <div class="stat-label">ВРЕМЯ</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="lose-matches">0</div>
+                    <div class="stat-label">НАЙДЕНО ПАР</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">0</div>
+                    <div class="stat-label">ПОПЫТКИ ОСТАЛОСЬ</div>
+                </div>
+            </div>
+            <button id="try-again-btn">
+                <i class="fas fa-redo"></i> ПОПРОБОВАТЬ СНОВА
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Данные для карточек - здесь нужно будет вставить URL ваших изображений
+        const cardData = [
+            {
+                id: 1,
+                name: "Солнце",
+                // Вставьте URL изображения для Солнца
+                imageUrl: "https://images.unsplash.com/photo-1614642264762-d0a3b8bf3700?q=80&w=1480&auto=format&fit=crop",
+                fact: "Солнце составляет 99.86% массы всей Солнечной системы. Его температура в ядре достигает 15 миллионов градусов Цельсия.",
+                color: "#FFD700"
+            },
+            {
+                id: 2,
+                name: "Меркурий",
+                // Вставьте URL изображения для Меркурия
+                imageUrl: "https://images.unsplash.com/photo-1614313913007-2b4ae8ce32d6?q=80&w=1374&auto=format&fit=crop",
+                fact: "Меркурий - самая маленькая планета Солнечной системы и ближайшая к Солнцу. Один год на Меркурии длится всего 88 земных дней.",
+                color: "#A9A9A9"
+            },
+            {
+                id: 3,
+                name: "Венера",
+                // Вставьте URL изображения для Венеры
+                imageUrl: "https://images.unsplash.com/photo-1614314107768-6018068c28e8?q=80&w=1374&auto=format&fit=crop",
+                fact: "Венера - самая горячая планета Солнечной системы с температурой поверхности около 470°C из-за парникового эффекта.",
+                color: "#FFA500"
+            },
+            {
+                id: 4,
+                name: "Земля",
+                // Вставьте URL изображения для Земли
+                imageUrl: "https://images.unsplash.com/photo-1614313913009-2ac3c3b6d0e2?q=80&w=1374&auto=format&fit=crop",
+                fact: "Земля - единственная известная планета, на которой есть жизнь. Она имеет мощное магнитное поле, защищающее от солнечной радиации.",
+                color: "#1E90FF"
+            },
+            {
+                id: 5,
+                name: "Марс",
+                // Вставьте URL изображения для Марса
+                imageUrl: "https://images.unsplash.com/photo-1614313913005-5c5a5e5b5b5b?q=80&w=1374&auto=format&fit=crop",
+                fact: "Марс называют 'Красной планетой' из-за оксида железа в его почве. На Марсе находится самая высокая гора в Солнечной системе - Олимп высотой 21 км.",
+                color: "#FF4500"
+            },
+            {
+                id: 6,
+                name: "Юпитер",
+                // Вставьте URL изображения для Юпитера
+                imageUrl: "https://images.unsplash.com/photo-1614313913011-5b5a5e5b5b5b?q=80&w=1374&auto=format&fit=crop",
+                fact: "Юпитер - самая большая планета Солнечной системы. Его знаменитое Большое Красное Пятно - гигантский шторм, бушующий уже более 350 лет.",
+                color: "#FFDAB9"
+            },
+            {
+                id: 7,
+                name: "Сатурн",
+                // Вставьте URL изображения для Сатурна
+                imageUrl: "https://images.unsplash.com/photo-1614313913022-5b5a5e5b5b5b?q=80&w=1374&auto=format&fit=crop",
+                fact: "Сатурн известен своими впечатляющими кольцами, состоящими из миллиардов частиц льда и камня. Это наименее плотная планета в Солнечной системе.",
+                color: "#F0E68C"
+            },
+            {
+                id: 8,
+                name: "Уран",
+                // Вставьте URL изображения для Урана
+                imageUrl: "https://images.unsplash.com/photo-1614313913033-5b5a5e5b5b5b?q=80&w=1374&auto=format&fit=crop",
+                fact: "Уран вращается 'лежа на боку' - его ось вращения наклонена на 98 градусов. Он также имеет слабую систему колец, как и Сатурн.",
+                color: "#AFEEEE"
+            }
+        ];
+
+        // Данные для FAQ о планетах
+        const planetFacts = [
+            {
+                name: "Солнце",
+                fact: "Звезда класса G2V, возраст около 4.6 млрд лет. Содержит 99.86% массы Солнечной системы. Температура ядра: 15 млн °C.",
+                icon: "fas fa-sun"
+            },
+            {
+                name: "Меркурий",
+                fact: "Ближайшая к Солнцу планета. Нет атмосферы, сильные перепады температур от -180°C до +430°C. Год длится 88 земных дней.",
+                icon: "fas fa-temperature-high"
+            },
+            {
+                name: "Венера",
+                fact: "Самая горячая планета (470°C). Атмосфера из углекислого газа с облаками серной кислоты. Вращается в обратную сторону.",
+                icon: "fas fa-fire"
+            },
+            {
+                name: "Земля",
+                fact: "Единственная планета с жидкой водой на поверхности. Имеет мощное магнитное поле и один естественный спутник - Луну.",
+                icon: "fas fa-globe-americas"
+            },
+            {
+                name: "Марс",
+                fact: "Красный цвет из-за оксида железа. Имеет самую высокую гору (Олимп, 21 км) и самый большой каньон (Долина Маринер, 4000 км).",
+                icon: "fas fa-mountain"
+            },
+            {
+                name: "Юпитер",
+                fact: "Крупнейшая планета. Большое Красное Пятно - гигантский шторм больше Земли. Имеет 79 известных спутников.",
+                icon: "fas fa-expand-arrows-alt"
+            },
+            {
+                name: "Сатурн",
+                fact: "Известен системой колец из льда и камня. Наименее плотная планета - могла бы плавать в воде. Имеет 82 спутника.",
+                icon: "fas fa-ring"
+            },
+            {
+                name: "Уран",
+                fact: "Вращается 'на боку' (ось наклонена на 98°). Сине-зелёный цвет из-за метана в атмосфере. Открыт в 1781 году.",
+                icon: "fas fa-retweet"
+            },
+            {
+                name: "Нептун",
+                fact: "Самая ветреная планета (скорость ветра до 2100 км/ч). Открыт с помощью математических расчётов. Имеет 14 спутников.",
+                icon: "fas fa-wind"
+            },
+            {
+                name: "Плутон",
+                fact: "Карликовая планета с орбитальным периодом 248 лет. Имеет 5 спутников, крупнейший - Харон. Поверхность покрыта азотным льдом.",
+                icon: "fas fa-snowflake"
+            }
+        ];
+
+        // Игровые переменные
+        let gameState = {
+            cards: [],
+            flippedCards: [],
+            matchedPairs: 0,
+            moves: 0,
+            attempts: 10, // Ограниченное количество попыток
+            gameStarted: false,
+            timer: 0,
+            timerInterval: null,
+            totalPairs: cardData.length,
+            gameOver: false
+        };
+
+        // DOM элементы
+        const gameBoard = document.getElementById('game-board');
+        const movesElement = document.getElementById('moves');
+        const timerElement = document.getElementById('timer');
+        const matchesElement = document.getElementById('matches');
+        const attemptsElement = document.getElementById('attempts');
+        const progressBar = document.getElementById('progress-bar');
+        const resetButton = document.getElementById('reset-btn');
+        const hintButton = document.getElementById('hint-btn');
+        const faqToggleButton = document.getElementById('faq-toggle');
+        const factPanel = document.getElementById('fact-panel');
+        const factTitle = document.getElementById('fact-title');
+        const factContent = document.getElementById('fact-content');
+        const closeFactButton = document.getElementById('close-fact');
+        const faqPanel = document.getElementById('faq-panel');
+        const faqContent = document.getElementById('faq-content');
+        const winMessage = document.getElementById('win-message');
+        const winTime = document.getElementById('win-time');
+        const winMoves = document.getElementById('win-moves');
+        const winAttemptsLeft = document.getElementById('win-attempts-left');
+        const playAgainButton = document.getElementById('play-again-btn');
+        const gameOverMessage = document.getElementById('game-over-message');
+        const loseTime = document.getElementById('lose-time');
+        const loseMatches = document.getElementById('lose-matches');
+        const tryAgainButton = document.getElementById('try-again-btn');
+        const testImageBtn = document.getElementById('test-image-btn');
+        const testImageUrl = document.getElementById('test-image-url');
+        const imagePreview = document.getElementById('image-preview');
+
+        // Создание космического фона
+        function createSpaceBackground() {
+            const spaceBg = document.getElementById('space-bg');
+            
+            // Создаем туманности
+            for (let i = 0; i < 5; i++) {
+                const nebula = document.createElement('div');
+                nebula.classList.add('nebula');
+                nebula.style.width = `${200 + Math.random() * 400}px`;
+                nebula.style.height = nebula.style.width;
+                nebula.style.top = `${Math.random() * 100}%`;
+                nebula.style.left = `${Math.random() * 100}%`;
+                nebula.style.background = `radial-gradient(circle, hsla(${Math.random() * 360}, 70%, 50%, 0.3), transparent)`;
+                nebula.style.animationDuration = `${20 + Math.random() * 20}s`;
+                nebula.style.animationDelay = `${Math.random() * 10}s`;
+                spaceBg.appendChild(nebula);
+            }
+            
+            // Создаем пульсары
+            for (let i = 0; i < 15; i++) {
+                const pulsar = document.createElement('div');
+                pulsar.classList.add('pulsar');
+                pulsar.style.top = `${Math.random() * 100}%`;
+                pulsar.style.left = `${Math.random() * 100}%`;
+                pulsar.style.animationDelay = `${Math.random() * 2}s`;
+                spaceBg.appendChild(pulsar);
+            }
+            
+            // Создаем звезды
+            for (let i = 0; i < 200; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                const size = Math.random() * 3;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.opacity = Math.random() * 0.7 + 0.3;
+                star.style.animation = `twinkle ${3 + Math.random() * 5}s infinite alternate`;
+                spaceBg.appendChild(star);
+            }
+        }
+
+        // Создание FAQ о планетах
+        function createFaq() {
+            faqContent.innerHTML = '';
+            
+            planetFacts.forEach((planet, index) => {
+                const planetItem = document.createElement('div');
+                planetItem.classList.add('planet-item');
+                planetItem.dataset.index = index;
+                
+                const planetHeader = document.createElement('div');
+                planetHeader.classList.add('planet-header');
+                
+                const planetIcon = document.createElement('div');
+                planetIcon.classList.add('planet-icon');
+                planetIcon.style.backgroundColor = cardData.find(c => c.name === planet.name)?.color || '#6d9eff';
+                planetIcon.innerHTML = `<i class="${planet.icon}"></i>`;
+                
+                const planetName = document.createElement('div');
+                planetName.classList.add('planet-name');
+                planetName.textContent = planet.name;
+                
+                const planetFact = document.createElement('div');
+                planetFact.classList.add('planet-fact');
+                planetFact.textContent = planet.fact;
+                
+                planetHeader.appendChild(planetIcon);
+                planetHeader.appendChild(planetName);
+                planetItem.appendChild(planetHeader);
+                planetItem.appendChild(planetFact);
+                
+                planetItem.addEventListener('click', () => {
+                    // Закрываем другие открытые факты
+                    document.querySelectorAll('.planet-item.active').forEach(item => {
+                        if (item !== planetItem) item.classList.remove('active');
+                    });
+                    
+                    // Открываем/закрываем текущий факт
+                    planetItem.classList.toggle('active');
+                });
+                
+                faqContent.appendChild(planetItem);
+            });
+        }
+
+        // Создание карточки с изображением
+        function createCardElement(card, index) {
+            const cardElement = document.createElement('div');
+            cardElement.classList.add('card');
+            cardElement.dataset.id = card.id;
+            cardElement.dataset.index = index;
+            
+            // Лицевая сторона карточки (изображение)
+            const cardFront = document.createElement('div');
+            cardFront.classList.add('card-front');
+            const cardImage = document.createElement('img');
+            cardImage.classList.add('card-image');
+            cardImage.src = card.imageUrl;
+            cardImage.alt = card.name;
+            
+            // Исправленная функция для обработки ошибок загрузки изображений
+            cardImage.onerror = function() {
+                console.log(`Ошибка загрузки изображения для ${card.name}: ${card.imageUrl}`);
+                // Если изображение не загрузилось, показываем заглушку с цветом
+                this.classList.add('fallback');
+                this.src = `https://via.placeholder.com/300x400/1a1f4d/${card.color.replace('#', '')}?text=${encodeURIComponent(card.name)}`;
+            };
+            
+            cardImage.onload = function() {
+                console.log(`Изображение загружено успешно для ${card.name}`);
+            };
+            
+            cardFront.appendChild(cardImage);
+            
+            // Обратная сторона карточки (космический узор)
+            const cardBack = document.createElement('div');
+            cardBack.classList.add('card-back');
+            const backIcon = document.createElement('i');
+            backIcon.classList.add('fas', 'fa-star');
+            cardBack.appendChild(backIcon);
+            
+            cardElement.appendChild(cardFront);
+            cardElement.appendChild(cardBack);
+            
+            // Добавляем обработчик клика
+            cardElement.addEventListener('click', () => flipCard(cardElement, card));
+            
+            return cardElement;
+        }
+
+        // Инициализация игры
+        function initGame() {
+            // Очищаем предыдущее состояние
+            clearInterval(gameState.timerInterval);
+            gameState = {
+                cards: [],
+                flippedCards: [],
+                matchedPairs: 0,
+                moves: 0,
+                attempts: 10,
+                gameStarted: false,
+                timer: 0,
+                timerInterval: null,
+                totalPairs: cardData.length,
+                gameOver: false
+            };
+            
+            // Обновляем отображение
+            movesElement.textContent = gameState.moves;
+            matchesElement.textContent = `${gameState.matchedPairs}/${gameState.totalPairs}`;
+            attemptsElement.textContent = gameState.attempts;
+            timerElement.textContent = formatTime(gameState.timer);
+            updateProgressBar();
+            
+            // Создаём пары карточек
+            const cardPairs = [...cardData, ...cardData];
+            
+            // Перемешиваем карточки
+            shuffleArray(cardPairs);
+            
+            // Очищаем игровое поле
+            gameBoard.innerHTML = '';
+            
+            // Создаём карточки
+            cardPairs.forEach((card, index) => {
+                const cardElement = createCardElement(card, index);
+                
+                // Сохраняем в состоянии игры
+                gameState.cards.push({
+                    element: cardElement,
+                    id: card.id,
+                    name: card.name,
+                    fact: card.fact,
+                    flipped: false,
+                    matched: false
+                });
+                
+                // Добавляем на игровое поле
+                gameBoard.appendChild(cardElement);
+            });
+            
+            // Закрываем панель фактов и сообщения
+            factPanel.classList.remove('active');
+            winMessage.classList.remove('active');
+            gameOverMessage.classList.remove('active');
+            
+            // Включаем кнопки
+            hintButton.disabled = false;
+            
+            // Создаем FAQ
+            createFaq();
+        }
+
+        // Обновление полосы прогресса попыток
+        function updateProgressBar() {
+            const percent = (gameState.attempts / 10) * 100;
+            progressBar.style.width = `${percent}%`;
+            
+            // Меняем цвет в зависимости от оставшихся попыток
+            if (gameState.attempts <= 3) {
+                progressBar.style.background = "#F44336";
+            } else if (gameState.attempts <= 6) {
+                progressBar.style.background = "#FFC107";
+            } else {
+                progressBar.style.background = "#4CAF50";
+            }
+        }
+
+        // Перемешивание массива (алгоритм Фишера-Йетса)
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // Форматирование времени в мм:сс
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60).toString().padStart(2, '0');
+            const secs = (seconds % 60).toString().padStart(2, '0');
+            return `${mins}:${secs}`;
+        }
+
+        // Запуск таймера
+        function startTimer() {
+            if (!gameState.gameStarted && !gameState.gameOver) {
+                gameState.gameStarted = true;
+                gameState.timerInterval = setInterval(() => {
+                    gameState.timer++;
+                    timerElement.textContent = formatTime(gameState.timer);
+                }, 1000);
+            }
+        }
+
+        // Переворот карточки
+        function flipCard(cardElement, cardData) {
+            // Если игра окончена, выходим
+            if (gameState.gameOver) return;
+            
+            // Если попытки закончились, выходим
+            if (gameState.attempts <= 0) {
+                endGame(false);
+                return;
+            }
+            
+            const card = gameState.cards.find(c => c.element === cardElement);
+            
+            // Если карточка уже перевернута или совпала, выходим
+            if (card.flipped || card.matched || gameState.flippedCards.length >= 2) {
+                return;
+            }
+            
+            // Если игра не начата, начинаем
+            if (!gameState.gameStarted) {
+                startTimer();
+            }
+            
+            // Переворачиваем карточку
+            cardElement.classList.add('flipped');
+            card.flipped = true;
+            gameState.flippedCards.push(card);
+            
+            // Если перевернуты две карточки
+            if (gameState.flippedCards.length === 2) {
+                // Увеличиваем счетчик ходов
+                gameState.moves++;
+                movesElement.textContent = gameState.moves;
+                
+                // Уменьшаем количество попыток
+                gameState.attempts--;
+                attemptsElement.textContent = gameState.attempts;
+                updateProgressBar();
+                
+                // Проверяем, совпадают ли карточки
+                const [card1, card2] = gameState.flippedCards;
+                
+                if (card1.id === card2.id) {
+                    // Найдена пара
+                    setTimeout(() => {
+                        card1.element.classList.add('matched');
+                        card2.element.classList.add('matched');
+                        card1.matched = true;
+                        card2.matched = true;
+                        
+                        gameState.matchedPairs++;
+                        matchesElement.textContent = `${gameState.matchedPairs}/${gameState.totalPairs}`;
+                        
+                        // Показываем факт о найденной паре
+                        showFact(card1.name, card1.fact);
+                        
+                        // Очищаем перевернутые карточки
+                        gameState.flippedCards = [];
+                        
+                        // Проверяем, завершена ли игра
+                        if (gameState.matchedPairs === gameState.totalPairs) {
+                            endGame(true);
+                        }
+                    }, 500);
+                } else {
+                    // Карточки не совпадают
+                    setTimeout(() => {
+                        card1.element.classList.remove('flipped');
+                        card2.element.classList.remove('flipped');
+                        card1.flipped = false;
+                        card2.flipped = false;
+                        gameState.flippedCards = [];
+                        
+                        // Проверяем, не закончились ли попытки
+                        if (gameState.attempts <= 0) {
+                            endGame(false);
+                        }
+                    }, 1000);
+                }
+            }
+        }
+
+        // Показ факта о планете/созвездии
+        function showFact(title, content) {
+            factTitle.textContent = title;
+            factContent.textContent = content;
+            factPanel.classList.add('active');
+        }
+
+        // Завершение игры
+        function endGame(isWin) {
+            clearInterval(gameState.timerInterval);
+            gameState.gameOver = true;
+            
+            if (isWin) {
+                // Показываем статистику победы
+                winTime.textContent = formatTime(gameState.timer);
+                winMoves.textContent = gameState.moves;
+                winAttemptsLeft.textContent = gameState.attempts;
+                
+                // Показываем сообщение о победе с небольшой задержкой
+                setTimeout(() => {
+                    winMessage.classList.add('active');
+                }, 1000);
+            } else {
+                // Показываем статистику проигрыша
+                loseTime.textContent = formatTime(gameState.timer);
+                loseMatches.textContent = gameState.matchedPairs;
+                
+                // Показываем сообщение о проигрыше
+                setTimeout(() => {
+                    gameOverMessage.classList.add('active');
+                }, 500);
+            }
+        }
+
+        // Подсказка (временно показывает все карточки)
+        function showHint() {
+            if (gameState.moves === 0 || gameState.gameOver || gameState.attempts <= 2) return;
+            
+            // Используем попытку для подсказки
+            gameState.attempts -= 2;
+            attemptsElement.textContent = gameState.attempts;
+            updateProgressBar();
+            
+            // Переворачиваем все карточки
+            gameState.cards.forEach(card => {
+                if (!card.matched) {
+                    card.element.classList.add('flipped');
+                    card.flipped = true;
+                }
+            });
+            
+            // Через 1.5 секунды скрываем неподходящие карточки
+            setTimeout(() => {
+                gameState.cards.forEach(card => {
+                    if (!card.matched) {
+                        card.element.classList.remove('flipped');
+                        card.flipped = false;
+                    }
+                });
+                // Очищаем перевернутые карточки
+                gameState.flippedCards = [];
+                
+                // Проверяем, не закончились ли попытки
+                if (gameState.attempts <= 0) {
+                    setTimeout(() => endGame(false), 500);
+                }
+            }, 1500);
+        }
+
+        // Тестирование URL изображения
+        function testImageUrl() {
+            const url = testImageUrl.value.trim();
+            if (!url) {
+                alert('Пожалуйста, введите URL изображения');
+                return;
+            }
+            
+            imagePreview.src = url;
+            imagePreview.classList.remove('show');
+            
+            imagePreview.onload = function() {
+                console.log('Изображение загружено успешно!');
+                imagePreview.classList.add('show');
+                alert('✅ Изображение загружено успешно! Теперь вы можете заменить URL в массиве cardData.');
+            };
+            
+            imagePreview.onerror = function() {
+                console.log('Ошибка загрузки изображения');
+                alert('❌ Ошибка загрузки изображения. Пожалуйста, проверьте URL и попробуйте снова.');
+            };
+        }
+
+        // Обработчики событий
+        resetButton.addEventListener('click', initGame);
+        
+        hintButton.addEventListener('click', showHint);
+        
+        faqToggleButton.addEventListener('click', () => {
+            // Прокручиваем к FAQ
+            faqPanel.scrollIntoView({ behavior: 'smooth' });
+            
+            // Добавляем эффект подсветки
+            faqPanel.classList.add('glowing');
+            setTimeout(() => {
+                faqPanel.classList.remove('glowing');
+            }, 2000);
+        });
+        
+        closeFactButton.addEventListener('click', () => {
+            factPanel.classList.remove('active');
+        });
+        
+        playAgainButton.addEventListener('click', () => {
+            winMessage.classList.remove('active');
+            initGame();
+        });
+        
+        tryAgainButton.addEventListener('click', () => {
+            gameOverMessage.classList.remove('active');
+            initGame();
+        });
+        
+        testImageBtn.addEventListener('click', testImageUrl);
+        
+        testImageUrl.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                testImageUrl();
+            }
+        });
+
+        // Запускаем игру при загрузке страницы
+        document.addEventListener('DOMContentLoaded', () => {
+            createSpaceBackground();
+            initGame();
+            
+            // Добавляем CSS для мерцания звезд
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes twinkle {
+                    0%, 100% { opacity: 0.3; }
+                    50% { opacity: 1; }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            // Инструкция по замене изображений
+            console.log(`
+            ===========================================
+            ИНСТРУКЦИЯ ПО ЗАМЕНЕ ИЗОБРАЖЕНИЙ:
+            ===========================================
+            1. Найдите изображения планет в интернете
+            2. Скопируйте URL изображения (должен заканчиваться на .jpg, .png, .gif и т.д.)
+            3. Вставьте URL в поле для тестирования изображений
+            4. Если изображение отображается - оно подходит
+            5. Замените URL в массиве cardData (строка 420-460)
+            
+            Пример правильного URL:
+            https://example.com/images/sun.jpg
+            
+            Примеры хороших источников изображений:
+            - NASA Image Library
+            - Unsplash (космические темы)
+            - Pixabay (бесплатные изображения)
+            ===========================================
+            `);
+        });
+    </script>
+</body>
+</html>
