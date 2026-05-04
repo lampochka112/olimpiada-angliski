@@ -1,1560 +1,1114 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Космическая игра "Планетарная память"</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --primary: #0a0a2a;
-            --secondary: #1a1a4a;
-            --accent: #4a9ff5;
-            --accent2: #9a4ff0;
-            --text: #ffffff;
-            --text-secondary: #a0c8f8;
-            --success: #2ecc71;
-            --warning: #f39c12;
-            --danger: #e74c3c;
-            --card-bg: rgba(16, 30, 66, 0.8);
-            --star-color: rgba(255, 255, 255, 0.8);
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Orbitron', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background: var(--primary);
-            color: var(--text);
-            min-height: 100vh;
-            overflow-x: hidden;
-            position: relative;
-        }
-        
-        /* Анимированный космический фон */
-        .space-background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -3;
-            overflow: hidden;
-        }
-        
-        .nebula {
-            position: absolute;
-            border-radius: 50%;
-            opacity: 0.1;
-            filter: blur(60px);
-        }
-        
-        .nebula-1 {
-            width: 800px;
-            height: 800px;
-            background: radial-gradient(circle, var(--accent), transparent);
-            top: -300px;
-            left: -200px;
-            animation: float 25s infinite alternate ease-in-out;
-        }
-        
-        .nebula-2 {
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, var(--accent2), transparent);
-            bottom: -200px;
-            right: -100px;
-            animation: float 30s infinite alternate-reverse ease-in-out;
-        }
-        
-        .stars-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -2;
-        }
-        
-        .star {
-            position: absolute;
-            background-color: var(--star-color);
-            border-radius: 50%;
-        }
-        
-        .shooting-star {
-            position: absolute;
-            width: 100px;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, white);
-            opacity: 0;
-        }
-        
-        .planet-background {
-            position: fixed;
-            width: 300px;
-            height: 300px;
-            border-radius: 50%;
-            z-index: -1;
-            opacity: 0.05;
-            filter: blur(20px);
-        }
-        
-        .planet-1 {
-            background: radial-gradient(circle, #4a9ff5, #1a5fb4);
-            top: 10%;
-            right: 5%;
-            animation: orbit 60s infinite linear;
-        }
-        
-        .planet-2 {
-            background: radial-gradient(circle, #9a4ff0, #6b3fa0);
-            bottom: 15%;
-            left: 8%;
-            animation: orbit 80s infinite linear reverse;
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(50px, 30px) scale(1.05); }
-        }
-        
-        @keyframes orbit {
-            from { transform: rotate(0deg) translateX(200px) rotate(0deg); }
-            to { transform: rotate(360deg) translateX(200px) rotate(-360deg); }
-        }
-        
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.05); opacity: 0.8; }
-        }
-        
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-            20%, 40%, 60%, 80% { transform: translateX(5px); }
-        }
-        
-        @keyframes glow {
-            0%, 100% { box-shadow: 0 0 10px var(--accent); }
-            50% { box-shadow: 0 0 30px var(--accent); }
-        }
-        
-        @keyframes cardFlip {
-            0% { transform: rotateY(0); }
-            100% { transform: rotateY(180deg); }
-        }
-        
-        @keyframes flyIn {
-            0% { transform: translateY(-100px) scale(0.5); opacity: 0; }
-            100% { transform: translateY(0) scale(1); opacity: 1; }
-        }
-        
-        /* Основные стили */
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        header {
-            text-align: center;
-            padding: 30px 0 40px;
-            position: relative;
-            animation: flyIn 1s ease-out;
-        }
-        
-        .logo {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 20px;
-            margin-bottom: 15px;
-        }
-        
-        .logo-icon {
-            font-size: 3.5rem;
-            color: var(--accent);
-            animation: pulse 3s infinite;
-        }
-        
-        h1 {
-            font-size: 3.5rem;
-            margin-bottom: 10px;
-            background: linear-gradient(to right, var(--accent), var(--accent2));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            text-shadow: 0 0 20px rgba(74, 159, 245, 0.5);
-            letter-spacing: 1px;
-        }
-        
-        .subtitle {
-            font-size: 1.3rem;
-            color: var(--text-secondary);
-            margin-bottom: 10px;
-        }
-        
-        .game-info {
-            display: flex;
-            justify-content: space-around;
-            background: var(--card-bg);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 30px;
-            border: 1px solid rgba(74, 159, 245, 0.3);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            animation: flyIn 1s ease-out 0.2s both;
-        }
-        
-        .info-box {
-            text-align: center;
-            padding: 10px;
-            flex: 1;
-            position: relative;
-        }
-        
-        .info-box:not(:last-child)::after {
-            content: '';
-            position: absolute;
-            right: 0;
-            top: 20%;
-            height: 60%;
-            width: 2px;
-            background: linear-gradient(to bottom, transparent, var(--accent), transparent);
-        }
-        
-        .info-label {
-            font-size: 1rem;
-            color: var(--text-secondary);
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-        
-        .info-value {
-            font-size: 2.2rem;
-            font-weight: bold;
-            color: var(--text);
-            text-shadow: 0 0 10px var(--accent);
-        }
-        
-        .controls {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 20px;
-            margin-bottom: 40px;
-            animation: flyIn 1s ease-out 0.4s both;
-        }
-        
-        .btn {
-            background: linear-gradient(135deg, var(--accent), var(--accent2));
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 15px;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 8px 20px rgba(26, 95, 180, 0.4);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            position: relative;
-            overflow: hidden;
-            z-index: 1;
-        }
-        
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.7s;
-            z-index: -1;
-        }
-        
-        .btn:hover::before {
-            left: 100%;
-        }
-        
-        .btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 25px rgba(26, 95, 180, 0.6);
-        }
-        
-        .btn:active {
-            transform: translateY(2px);
-        }
-        
-        .btn-warning {
-            background: linear-gradient(135deg, #f39c12, #e67e22);
-            box-shadow: 0 8px 20px rgba(243, 156, 18, 0.4);
-        }
-        
-        .btn-warning:hover {
-            box-shadow: 0 12px 25px rgba(243, 156, 18, 0.6);
-        }
-        
-        .btn-danger {
-            background: linear-gradient(135deg, #e74c3c, #c0392b);
-            box-shadow: 0 8px 20px rgba(231, 76, 60, 0.4);
-        }
-        
-        .btn-danger:hover {
-            box-shadow: 0 12px 25px rgba(231, 76, 60, 0.6);
-        }
-        
-        .difficulty-selector {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 30px;
-            animation: flyIn 1s ease-out 0.6s both;
-        }
-        
-        .difficulty-btn {
-            padding: 12px 25px;
-            border-radius: 10px;
-            background: rgba(16, 30, 66, 0.5);
-            border: 2px solid transparent;
-            color: var(--text-secondary);
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .difficulty-btn:hover {
-            transform: translateY(-3px);
-            border-color: var(--accent);
-        }
-        
-        .difficulty-btn.active {
-            background: linear-gradient(135deg, var(--accent), var(--accent2));
-            color: white;
-            border-color: transparent;
-            box-shadow: 0 5px 15px rgba(74, 159, 245, 0.4);
-        }
-        
-        .game-board {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-            margin-bottom: 40px;
-            animation: flyIn 1s ease-out 0.8s both;
-        }
-        
-        @media (max-width: 1200px) {
-            .game-board {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .game-board {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            h1 {
-                font-size: 2.5rem;
-            }
-            
-            .info-value {
-                font-size: 1.8rem;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .game-board {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 15px;
-            }
-            
-            .controls {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .btn {
-                width: 100%;
-                max-width: 300px;
-                justify-content: center;
-            }
-        }
-        
-        .card {
-            height: 220px;
-            perspective: 1000px;
-            cursor: pointer;
-        }
-        
-        .card-inner {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            text-align: center;
-            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            transform-style: preserve-3d;
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-        }
-        
-        .card.flipped .card-inner {
-            transform: rotateY(180deg);
-        }
-        
-        .card.matched .card-inner {
-            animation: glow 2s infinite;
-            box-shadow: 0 0 30px var(--success);
-        }
-        
-        .card.mismatched .card-inner {
-            animation: shake 0.5s;
-            box-shadow: 0 0 30px var(--danger);
-        }
-        
-        .card-front, .card-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-            border-radius: 20px;
-            overflow: hidden;
-        }
-        
-        .card-front {
-            background: linear-gradient(135deg, #0c1a3a, #1a3a6e);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            border: 3px solid rgba(74, 159, 245, 0.3);
-            padding: 20px;
-        }
-        
-        .card-front::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="rgba(255,255,255,0.1)"/></svg>');
-            opacity: 0.3;
-        }
-        
-        .card-front i {
-            font-size: 4rem;
-            margin-bottom: 20px;
-            color: var(--accent);
-            text-shadow: 0 0 20px var(--accent);
-        }
-        
-        .card-front p {
-            font-size: 1.1rem;
-            color: var(--text-secondary);
-        }
-        
-        .card-back {
-            background: linear-gradient(135deg, #1a3a6e, #0c1a3a);
-            transform: rotateY(180deg);
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            border: 3px solid var(--accent);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .card-back::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(74, 159, 245, 0.1) 0%, transparent 70%);
-            z-index: 0;
-        }
-        
-        .planet-icon {
-            font-size: 3.5rem;
-            margin-bottom: 15px;
-            z-index: 1;
-            position: relative;
-        }
-        
-        .planet-name {
-            font-size: 1.6rem;
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: var(--accent);
-            z-index: 1;
-            position: relative;
-            text-shadow: 0 0 10px var(--accent);
-        }
-        
-        .planet-desc {
-            font-size: 1rem;
-            color: var(--text-secondary);
-            line-height: 1.4;
-            z-index: 1;
-            position: relative;
-        }
-        
-        .planet-stats {
-            display: flex;
-            justify-content: space-around;
-            width: 100%;
-            margin-top: 15px;
-            z-index: 1;
-            position: relative;
-        }
-        
-        .stat {
-            text-align: center;
-        }
-        
-        .stat-label {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-        }
-        
-        .stat-value {
-            font-size: 1.1rem;
-            font-weight: bold;
-            color: white;
-        }
-        
-        .message-container {
-            text-align: center;
-            padding: 20px;
-            margin-bottom: 30px;
-            background: var(--card-bg);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            border: 1px solid rgba(74, 159, 245, 0.3);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            min-height: 80px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            animation: flyIn 1s ease-out 1s both;
-        }
-        
-        #message {
-            font-size: 1.3rem;
-            color: var(--text);
-            text-shadow: 0 0 10px var(--accent);
-        }
-        
-        .completion {
-            font-size: 1.1rem;
-            color: var(--text-secondary);
-            margin-top: 10px;
-        }
-        
-        footer {
-            text-align: center;
-            padding: 30px;
-            color: var(--text-secondary);
-            font-size: 1rem;
-            border-top: 1px solid rgba(74, 159, 245, 0.2);
-            margin-top: 40px;
-            animation: flyIn 1s ease-out 1.2s both;
-        }
-        
-        .win-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-            animation: fadeIn 0.5s ease;
-        }
-        
-        .win-content {
-            background: linear-gradient(135deg, #0c1a3a, #1a3a6e);
-            padding: 50px;
-            border-radius: 30px;
-            max-width: 600px;
-            width: 90%;
-            text-align: center;
-            border: 3px solid var(--accent);
-            box-shadow: 0 0 60px rgba(74, 159, 245, 0.8);
-            position: relative;
-            overflow: hidden;
-            animation: flyIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        
-        .win-content::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="rgba(255,255,255,0.1)"/></svg>');
-            opacity: 0.3;
-        }
-        
-        .win-content h2 {
-            font-size: 3rem;
-            color: var(--accent);
-            margin-bottom: 20px;
-            text-shadow: 0 0 20px var(--accent);
-            z-index: 1;
-            position: relative;
-        }
-        
-        .win-content p {
-            font-size: 1.3rem;
-            margin-bottom: 15px;
-            color: var(--text);
-            z-index: 1;
-            position: relative;
-        }
-        
-        .win-stats {
-            display: flex;
-            justify-content: space-around;
-            margin: 30px 0;
-            z-index: 1;
-            position: relative;
-        }
-        
-        .win-stat {
-            text-align: center;
-        }
-        
-        .win-stat-value {
-            font-size: 2.5rem;
-            font-weight: bold;
-            color: white;
-            text-shadow: 0 0 10px var(--accent);
-        }
-        
-        .win-stat-label {
-            font-size: 1.1rem;
-            color: var(--text-secondary);
-        }
-        
-        .rating {
-            font-size: 2rem;
-            color: #f1c40f;
-            margin: 20px 0;
-            z-index: 1;
-            position: relative;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        .progress-bar {
-            width: 100%;
-            height: 20px;
-            background: rgba(16, 30, 66, 0.7);
-            border-radius: 10px;
-            margin: 20px 0;
-            overflow: hidden;
-            border: 1px solid rgba(74, 159, 245, 0.3);
-        }
-        
-        .progress {
-            height: 100%;
-            background: linear-gradient(90deg, var(--accent), var(--accent2));
-            border-radius: 10px;
-            width: 0%;
-            transition: width 0.5s ease;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Cosmos OS: Memory of Worlds</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Orbitron:wght@400;600;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg-void: #010314;
+      --text-bright: #F2F6FF;
+      --text-soft: #A0B4E0;
+      --accent-blue: #38BDF8;
+      --accent-purple: #C084FC;
+      --accent-teal: #2DD4BF;
+      --accent-pink: #F472B6;
+      --glass-bg: rgba(8, 14, 35, 0.55);
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --card-radius: 1.5rem;
+      --card-radius-mobile: 1.2rem;
+      --glow-blue: 0 0 35px rgba(56, 189, 248, 0.45);
+      --glow-purple: 0 0 40px rgba(192, 132, 252, 0.4);
+    }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: radial-gradient(ellipse at 35% 25%, #0c0a2e 0%, #010314 70%);
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      margin: 0;
+      position: relative;
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+
+    /* МНОГОСЛОЙНЫЙ АНИМИРОВАННЫЙ КОСМИЧЕСКИЙ ФОН */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image: 
+        radial-gradient(1.5px 1.5px at 10% 25%, rgba(255,255,255,0.95), transparent),
+        radial-gradient(2px 2px at 25% 60%, rgba(180,210,255,0.8), transparent),
+        radial-gradient(1px 1px at 45% 15%, #ffffff, transparent),
+        radial-gradient(2px 2px at 75% 70%, rgba(200,230,255,0.75), transparent),
+        radial-gradient(1.5px 1.5px at 90% 35%, rgba(255,255,255,0.9), transparent),
+        radial-gradient(2px 2px at 55% 85%, rgba(160,200,255,0.7), transparent),
+        radial-gradient(1px 1px at 30% 45%, #e2e8f0, transparent),
+        radial-gradient(2px 2px at 68% 20%, rgba(220,240,255,0.8), transparent),
+        radial-gradient(1.5px 1.5px at 82% 52%, #ffffff, transparent),
+        radial-gradient(3px 3px at 15% 75%, rgba(255,255,255,0.6), transparent),
+        radial-gradient(1px 1px at 95% 10%, rgba(200,220,255,0.9), transparent);
+      background-size: 220px 220px;
+      opacity: 0.65;
+      animation: starfieldDrift 20s infinite alternate ease-in-out;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    @keyframes starfieldDrift {
+      0% { opacity: 0.5; transform: scale(1) rotate(0deg); }
+      50% { opacity: 0.8; transform: scale(1.03) rotate(0.5deg); }
+      100% { opacity: 0.65; transform: scale(1) rotate(0deg); }
+    }
+
+    /* ПАДАЮЩИЕ ЗВЁЗДЫ */
+    .shooting-stars {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .shooting-star {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      background: white;
+      border-radius: 50%;
+      box-shadow: 0 0 6px 2px rgba(255,255,255,0.8);
+      animation: shoot 4s linear infinite;
+      opacity: 0;
+    }
+
+    .shooting-star::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 60px;
+      height: 1.5px;
+      background: linear-gradient(90deg, rgba(255,255,255,0.8), transparent);
+    }
+
+    .shooting-star:nth-child(1) { top: 15%; left: 80%; animation-delay: 0s; }
+    .shooting-star:nth-child(2) { top: 25%; left: 60%; animation-delay: 2.5s; }
+    .shooting-star:nth-child(3) { top: 10%; left: 70%; animation-delay: 5s; }
+    .shooting-star:nth-child(4) { top: 35%; left: 85%; animation-delay: 1.5s; }
+    .shooting-star:nth-child(5) { top: 20%; left: 50%; animation-delay: 3.8s; }
+
+    @keyframes shoot {
+      0% { opacity: 0; transform: translate(0, 0) rotate(-35deg); }
+      5% { opacity: 1; }
+      15% { opacity: 0; transform: translate(-300px, 200px) rotate(-35deg); }
+      100% { opacity: 0; transform: translate(-300px, 200px) rotate(-35deg); }
+    }
+
+    /* ТУМАННОСТИ */
+    .nebula-aurora {
+      position: fixed;
+      top: -25%;
+      right: -15%;
+      width: 80vw;
+      height: 80vw;
+      background: radial-gradient(circle at 65% 30%, rgba(192, 132, 252, 0.25), transparent 70%);
+      filter: blur(100px);
+      z-index: 0;
+      pointer-events: none;
+      animation: nebulaBreath 12s infinite alternate;
+    }
+
+    .nebula-deep {
+      position: fixed;
+      bottom: -20%;
+      left: -12%;
+      width: 70vw;
+      height: 70vw;
+      background: radial-gradient(circle at 30% 75%, rgba(45, 212, 191, 0.2), transparent 70%);
+      filter: blur(100px);
+      z-index: 0;
+      pointer-events: none;
+      animation: nebulaBreath 15s infinite alternate-reverse;
+    }
+
+    .nebula-core {
+      position: fixed;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 50vw;
+      height: 50vw;
+      background: radial-gradient(circle at 50% 50%, rgba(56, 189, 248, 0.08), transparent 70%);
+      filter: blur(100px);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    @keyframes nebulaBreath {
+      0% { opacity: 0.6; transform: scale(1); }
+      100% { opacity: 1; transform: scale(1.1); }
+    }
+
+    /* ЧАСТИЦЫ */
+    .particles {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: rgba(255,255,255,0.4);
+      border-radius: 50%;
+      animation: floatUp 8s linear infinite;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(100vh) scale(0); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+    }
+
+    /* ЗАГРУЗОЧНЫЙ ЭКРАН */
+    #loading-screen {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(ellipse at center, #0a0a2e 0%, #000000 100%);
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transition: opacity 1s ease-out, visibility 1s;
+    }
+
+    .loader-orbit-system {
+      position: relative;
+      width: 300px;
+      height: 300px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .loader-sun {
+      width: 60px;
+      height: 60px;
+      background: radial-gradient(circle, #ffcc00, #ff8800);
+      border-radius: 50%;
+      box-shadow: 0 0 60px #ffaa00, 0 0 120px rgba(255,170,0,0.4);
+      z-index: 2;
+      animation: sunGlow 2s ease-in-out infinite;
+    }
+
+    @keyframes sunGlow {
+      0%, 100% { box-shadow: 0 0 60px #ffaa00, 0 0 120px rgba(255,170,0,0.4); }
+      50% { box-shadow: 0 0 80px #ffcc00, 0 0 160px rgba(255,170,0,0.6); }
+    }
+
+    .loader-planet {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.08);
+      animation: orbit linear infinite;
+    }
+
+    .p1 { width: 110px; height: 110px; animation-duration: 3s; }
+    .p1::after { content: ''; position: absolute; top: 10px; left: 50%; width: 10px; height: 10px; background: #0A84FF; border-radius: 50%; box-shadow: 0 0 15px #0A84FF; }
+    
+    .p2 { width: 190px; height: 190px; animation-duration: 5s; }
+    .p2::after { content: ''; position: absolute; top: 20px; left: 10%; width: 14px; height: 14px; background: #BF5AF2; border-radius: 50%; box-shadow: 0 0 18px #BF5AF2; }
+
+    .p3 { width: 270px; height: 270px; animation-duration: 8s; }
+    .p3::after { content: ''; position: absolute; bottom: 30px; right: 15%; width: 18px; height: 18px; background: #ff4d4d; border-radius: 50%; box-shadow: 0 0 20px #ff4d4d; }
+
+    @keyframes orbit {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    #loading-screen.align-planets .loader-planet {
+      animation: none !important;
+      transform: rotate(0deg);
+      transition: transform 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .loading-text-container {
+      margin-top: 40px;
+      text-align: center;
+      min-height: 60px;
+    }
+
+    .loading-status {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 400;
+      letter-spacing: 5px;
+      color: #A0B4E0;
+      font-size: 0.7rem;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+
+    .loading-authors {
+      font-size: 0.9rem;
+      color: #fff;
+      letter-spacing: 1px;
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 8px;
+      height: 15px;
+      background: #38BDF8;
+      margin-left: 5px;
+      vertical-align: middle;
+      animation: blink 1s step-end infinite;
+    }
+
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* ОСНОВНОЙ КОНТЕЙНЕР */
+    .app-container {
+      display: flex;
+      width: 100%;
+      max-width: 1550px;
+      gap: 1.5rem;
+      position: relative;
+      z-index: 10;
+      align-items: flex-start;
+    }
+
+    /* САЙДБАР */
+    .sidebar {
+      width: 280px;
+      flex-shrink: 0;
+      background: rgba(6, 10, 30, 0.6);
+      backdrop-filter: blur(45px);
+      -webkit-backdrop-filter: blur(45px);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 2.5rem;
+      padding: 2rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.8rem;
+      box-shadow: 0 40px 60px -20px rgba(0,0,0,0.8), inset 0 0 40px rgba(56, 189, 248, 0.06);
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sidebar::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 30% 20%, rgba(192,132,252,0.06), transparent 60%);
+      pointer-events: none;
+    }
+
+    .brand {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      background: linear-gradient(180deg, #E0F2FE 0%, #7DD3FC 80%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 0 20px rgba(56,189,248,0.5));
+      position: relative;
+      z-index: 1;
+    }
+
+    .stats-panel {
+      display: flex;
+      gap: 0.7rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .stat-box {
+      background: rgba(255,255,255,0.03);
+      border-radius: 1.2rem;
+      padding: 0.9rem 0.5rem;
+      flex: 1;
+      text-align: center;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.06);
+      transition: all 0.3s;
+    }
+
+    .stat-box:hover {
+      background: rgba(255,255,255,0.06);
+      border-color: rgba(56,189,248,0.3);
+      box-shadow: 0 0 20px rgba(56,189,248,0.15);
+    }
+
+    .stat-num {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #F0F4FF;
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    .actions {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .btn {
+      padding: 0.9rem;
+      border-radius: 1.2rem;
+      font-weight: 600;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: #E2E8F0;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+      backdrop-filter: blur(12px);
+      font-size: 0.85rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(255,255,255,0.1);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+
+    .btn:active::after {
+      width: 300px;
+      height: 300px;
+    }
+
+    .btn:hover {
+      background: rgba(56,189,248,0.1);
+      border-color: rgba(56,189,248,0.5);
+      box-shadow: 0 0 28px rgba(56,189,248,0.3);
+      transform: translateY(-2px);
+    }
+
+    .btn-hint {
+      background: linear-gradient(135deg, rgba(30, 64, 175, 0.5), rgba(15, 23, 42, 0.7));
+      border-color: rgba(56,189,248,0.4);
+    }
+
+    .inventory-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: 0.5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .inv-badge {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.04);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255,255,255,0.15);
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 0.75rem;
+      background-size: cover;
+      background-position: center;
+      position: relative;
+    }
+
+    .inv-badge:hover {
+      transform: scale(1.25);
+      border-color: #C084FC;
+      box-shadow: 0 0 30px rgba(192,132,252,0.6);
+      z-index: 5;
+    }
+
+    .inv-badge.matched-anim {
+      animation: badgePop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes badgePop {
+      0% { transform: scale(0); }
+      60% { transform: scale(1.3); }
+      100% { transform: scale(1); }
+    }
+
+    /* ИГРОВАЯ СЕТКА */
+    .game-grid {
+      flex: 1;
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 1rem;
+      perspective: 2000px;
+    }
+
+    .card-wrapper {
+      aspect-ratio: 3 / 4.2;
+      cursor: pointer;
+      transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+      position: relative;
+    }
+
+    .card-wrapper:hover {
+      transform: translateY(-8px);
+      z-index: 5;
+    }
+
+    .card-wrapper::after {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border-radius: var(--card-radius);
+      background: transparent;
+      transition: all 0.4s;
+      z-index: -1;
+    }
+
+    .card-wrapper:hover::after {
+      background: linear-gradient(135deg, rgba(56,189,248,0.3), rgba(192,132,252,0.3));
+      filter: blur(15px);
+      inset: -6px;
+      border-radius: calc(var(--card-radius) + 4px);
+    }
+
+    .card-inner {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+      border-radius: var(--card-radius);
+    }
+
+    .card-inner.flipped {
+      transform: rotateY(180deg);
+    }
+
+    .card-face {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      border-radius: var(--card-radius);
+      overflow: hidden;
+      box-shadow: 0 25px 40px -15px rgba(0,0,0,0.9);
+    }
+
+    .card-back {
+      background: radial-gradient(circle at 30% 35%, #1a2040, #020617);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(255,255,255,0.08);
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none"><path d="M50 15 L58 42 L85 50 L58 58 L50 85 L42 58 L15 50 L42 42 Z" fill="white" fill-opacity="0.15"/><circle cx="50" cy="50" r="18" stroke="white" stroke-opacity="0.2" stroke-width="1"/><circle cx="50" cy="50" r="28" stroke="white" stroke-opacity="0.08" stroke-width="0.5"/></svg>');
+      background-size: 55%;
+      background-repeat: no-repeat;
+      background-position: center;
+      transition: all 0.3s;
+    }
+
+    .card-wrapper:hover .card-back {
+      border-color: rgba(255,255,255,0.2);
+    }
+
+    .card-front {
+      transform: rotateY(180deg);
+      background: #030712;
+      border: 1px solid rgba(255,255,255,0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .card-inner.matched .card-front {
+      border-color: rgba(45,212,191,0.5);
+      box-shadow: inset 0 0 40px rgba(45,212,191,0.15);
+    }
+
+    /* ПЛАНЕТАРНЫЕ ГРАДИЕНТЫ */
+    .planet-sun { background-image: radial-gradient(circle at 35% 35%, #FDE047, #B45309); }
+    .planet-mercury { background-image: radial-gradient(circle at 35% 35%, #D1D5DB, #4B5563); }
+    .planet-venus { background-image: radial-gradient(circle at 40% 40%, #FBBF24, #92400E); }
+    .planet-earth { background-image: radial-gradient(circle at 35% 35%, #60A5FA, #064E3B); }
+    .planet-mars { background-image: radial-gradient(circle at 35% 35%, #F87171, #7F1D1D); }
+    .planet-jupiter { background-image: radial-gradient(circle at 35% 35%, #C4B5FD, #5B21B6); }
+    .planet-saturn { background-image: radial-gradient(circle at 35% 35%, #FDE68A, #9D174D); }
+    .planet-uranus { background-image: radial-gradient(circle at 35% 35%, #67E8F9, #155E75); }
+    .planet-neptune { background-image: radial-gradient(circle at 35% 35%, #60A5FA, #1E3A8A); }
+    .planet-moon { background-image: radial-gradient(circle at 35% 35%, #F3F4F6, #6B7280); }
+    .planet-galaxy { background-image: radial-gradient(circle at 35% 35%, #A78BFA, #4C1D95); }
+    .planet-nebula { background-image: radial-gradient(circle at 35% 35%, #F472B6, #831843); }
+
+    /* МОДАЛЬНЫЕ ОКНА */
+    .info-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(2,0,16,0.85);
+      backdrop-filter: blur(40px);
+      -webkit-backdrop-filter: blur(40px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s;
+    }
+
+    .info-modal.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .info-card {
+      background: rgba(10, 18, 40, 0.9);
+      backdrop-filter: blur(50px);
+      -webkit-backdrop-filter: blur(50px);
+      border-radius: 2rem;
+      padding: 2rem;
+      max-width: 500px;
+      width: 90%;
+      border: 1px solid rgba(255,255,255,0.15);
+      color: white;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.7);
+      transform: scale(0.9);
+      transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .info-modal.active .info-card {
+      transform: scale(1);
+    }
+
+    .win-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(1, 3, 20, 0.92);
+      backdrop-filter: blur(50px);
+      -webkit-backdrop-filter: blur(50px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.4s, visibility 0.4s;
+    }
+
+    .win-overlay.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .win-content {
+      text-align: center;
+      color: white;
+      transform: translateY(30px);
+      transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .win-overlay.visible .win-content {
+      transform: translateY(0);
+    }
+
+    /* АДАПТИВНОСТЬ */
+    @media (max-width: 1200px) {
+      .game-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0.8rem;
+      }
+      .sidebar {
+        width: 240px;
+        padding: 1.5rem 1.2rem;
+        border-radius: 2rem;
+      }
+      .brand {
+        font-size: 1.5rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding: 0.5rem;
+        align-items: flex-start;
+        overflow-y: auto;
+      }
+
+      .app-container {
+        flex-direction: column;
+        gap: 1rem;
+        width: 100%;
+      }
+
+      .sidebar {
+        width: 100%;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 0.8rem;
+        padding: 1rem 1.2rem;
+        border-radius: 1.5rem;
+        align-items: center;
+        justify-content: space-between;
+        position: sticky;
+        top: 0.5rem;
+        z-index: 50;
+      }
+
+      .brand {
+        font-size: 1.3rem;
+        order: 1;
+      }
+
+      .stats-panel {
+        order: 2;
+        gap: 0.5rem;
+      }
+
+      .stat-box {
+        padding: 0.5rem 0.6rem;
+        border-radius: 0.8rem;
+      }
+
+      .stat-num {
+        font-size: 1.1rem;
+      }
+
+      .actions {
+        flex-direction: row;
+        order: 3;
+        width: 100%;
+        gap: 0.5rem;
+      }
+
+      .btn {
+        flex: 1;
+        padding: 0.7rem;
+        font-size: 0.78rem;
+        border-radius: 1rem;
+      }
+
+      .inventory-grid {
+        order: 4;
+        width: 100%;
+        justify-content: flex-start;
+        gap: 0.4rem;
+        margin-top: 0;
+      }
+
+      .inv-badge {
+        width: 36px;
+        height: 36px;
+        font-size: 0.65rem;
+      }
+
+      .game-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0.6rem;
+      }
+
+      .card-wrapper {
+        aspect-ratio: 3 / 4.5;
+      }
+
+      :root {
+        --card-radius: 1rem;
+      }
+
+      .card-wrapper:hover {
+        transform: translateY(-4px);
+      }
+
+      .card-wrapper:hover::after {
+        inset: -3px;
+        border-radius: calc(var(--card-radius) + 3px);
+      }
+
+      .shooting-star {
+        display: none;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .game-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.5rem;
+      }
+
+      .sidebar {
+        padding: 0.8rem 1rem;
+        gap: 0.6rem;
+        border-radius: 1.2rem;
+        top: 0.3rem;
+      }
+
+      .brand {
+        font-size: 1.1rem;
+      }
+
+      .stat-box {
+        padding: 0.4rem 0.5rem;
+      }
+
+      .stat-num {
+        font-size: 1rem;
+      }
+
+      .btn {
+        padding: 0.6rem;
+        font-size: 0.7rem;
+        border-radius: 0.8rem;
+      }
+
+      .inv-badge {
+        width: 30px;
+        height: 30px;
+      }
+
+      .info-card {
+        padding: 1.5rem;
+        border-radius: 1.5rem;
+      }
+    }
+  </style>
 </head>
 <body>
-    <!-- Анимированный космический фон -->
-    <div class="space-background">
-        <div class="nebula nebula-1"></div>
-        <div class="nebula nebula-2"></div>
-        <div class="stars-container" id="starsContainer"></div>
-        <div class="planet-background planet-1"></div>
-        <div class="planet-background planet-2"></div>
+  <!-- ФОНОВЫЕ ЭФФЕКТЫ -->
+  <div class="nebula-aurora"></div>
+  <div class="nebula-deep"></div>
+  <div class="nebula-core"></div>
+
+  <!-- ПАДАЮЩИЕ ЗВЁЗДЫ -->
+  <div class="shooting-stars">
+    <div class="shooting-star"></div>
+    <div class="shooting-star"></div>
+    <div class="shooting-star"></div>
+    <div class="shooting-star"></div>
+    <div class="shooting-star"></div>
+  </div>
+
+  <!-- ПАРЯЩИЕ ЧАСТИЦЫ -->
+  <div class="particles" id="particles"></div>
+
+  <!-- ЗАГРУЗОЧНЫЙ ЭКРАН -->
+  <div id="loading-screen">
+    <div class="loader-orbit-system">
+      <div class="loader-sun"></div>
+      <div class="loader-planet p1"></div>
+      <div class="loader-planet p2"></div>
+      <div class="loader-planet p3"></div>
     </div>
-    
-    <div class="container">
-        <header>
-            <div class="logo">
-                <i class="fas fa-rocket logo-icon"></i>
-                <h1>ПЛАНЕТАРНАЯ ПАМЯТЬ</h1>
-                <i class="fas fa-satellite logo-icon"></i>
-            </div>
-            <p class="subtitle">Исследуй космос и найди все пары планет Солнечной системы</p>
-        </header>
-        
-        <div class="game-info">
-            <div class="info-box">
-                <div class="info-label"><i class="fas fa-footsteps"></i> ХОДЫ</div>
-                <div class="info-value" id="moves">0</div>
-            </div>
-            <div class="info-box">
-                <div class="info-label"><i class="fas fa-star"></i> СОВПАДЕНИЯ</div>
-                <div class="info-value" id="matches">0 / 8</div>
-            </div>
-            <div class="info-box">
-                <div class="info-label"><i class="fas fa-clock"></i> ВРЕМЯ</div>
-                <div class="info-value" id="timer">00:00</div>
-            </div>
-            <div class="info-box">
-                <div class="info-label"><i class="fas fa-tachometer-alt"></i> СЛОЖНОСТЬ</div>
-                <div class="info-value" id="difficulty">СРЕДНИЙ</div>
-            </div>
-        </div>
-        
-        <div class="difficulty-selector">
-            <button class="difficulty-btn" data-level="easy">ЛЁГКИЙ (4 пары)</button>
-            <button class="difficulty-btn active" data-level="medium">СРЕДНИЙ (8 пар)</button>
-            <button class="difficulty-btn" data-level="hard">СЛОЖНЫЙ (12 пар)</button>
-        </div>
-        
-        <div class="controls">
-            <button class="btn" id="startBtn"><i class="fas fa-play"></i> НОВАЯ ИГРА</button>
-            <button class="btn btn-warning" id="hintBtn"><i class="fas fa-lightbulb"></i> ПОДСКАЗКА (3)</button>
-            <button class="btn" id="soundBtn"><i class="fas fa-volume-up"></i> ЗВУК: ВКЛ</button>
-            <button class="btn btn-danger" id="resetBtn"><i class="fas fa-redo"></i> СБРОСИТЬ</button>
-        </div>
-        
-        <div class="game-board" id="gameBoard">
-            <!-- Карточки будут сгенерированы JavaScript -->
-        </div>
-        
-        <div class="message-container">
-            <div>
-                <div id="message">Нажмите "НОВАЯ ИГРА", чтобы начать космическое приключение!</div>
-                <div class="completion">Прогресс: <span id="progress">0</span>%</div>
-                <div class="progress-bar">
-                    <div class="progress" id="progressBar"></div>
-                </div>
-            </div>
-        </div>
+    <div class="loading-text-container">
+      <div class="loading-status" id="loading-status">System initializing...</div>
+      <div class="loading-authors">
+        <span id="authors-loader-text"></span><span class="cursor"></span>
+      </div>
     </div>
-    
-    <footer>
-        <p>Космическая игра "Планетарная память" | Исследуй Солнечную систему | © 2023 Космические технологии</p>
-    </footer>
-    
-    <div class="win-overlay" id="winOverlay">
-        <div class="win-content">
-            <h2><i class="fas fa-trophy"></i> ПОБЕДА!</h2>
-            <p>Вы успешно исследовали все планеты Солнечной системы!</p>
-            
-            <div class="win-stats">
-                <div class="win-stat">
-                    <div class="win-stat-value" id="finalMoves">0</div>
-                    <div class="win-stat-label">ХОДЫ</div>
-                </div>
-                <div class="win-stat">
-                    <div class="win-stat-value" id="finalTime">00:00</div>
-                    <div class="win-stat-label">ВРЕМЯ</div>
-                </div>
-                <div class="win-stat">
-                    <div class="win-stat-value" id="finalScore">0</div>
-                    <div class="win-stat-label">ОЧКИ</div>
-                </div>
-            </div>
-            
-            <div class="rating" id="ratingStars">
-                <!-- Звезды рейтинга будут добавлены через JS -->
-            </div>
-            
-            <p id="winMessage">Отличный результат! Вы - настоящий космический исследователь!</p>
-            <button class="btn" id="playAgainBtn"><i class="fas fa-play"></i> ИГРАТЬ СНОВА</button>
+  </div>
+
+  <!-- ОСНОВНОЙ ИНТЕРФЕЙС -->
+  <div class="app-container">
+    <aside class="sidebar">
+      <div class="brand">✦ COSMOS</div>
+      <div class="stats-panel">
+        <div class="stat-box">
+          <span class="stat-num" id="moves">0</span>
+          <br><small style="color:#A0B4E0; font-size:0.7rem;">ХОДОВ</small>
         </div>
+        <div class="stat-box">
+          <span class="stat-num" id="timer">00:00</span>
+          <br><small style="color:#A0B4E0; font-size:0.7rem;">ВРЕМЯ</small>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="btn btn-hint" id="hint-btn">
+          <i class="fas fa-sun"></i> Подсказка (<span id="hints-count">2</span>)
+        </button>
+        <button class="btn" onclick="restartGame()">
+          <i class="fas fa-rocket"></i> Миссия
+        </button>
+      </div>
+      <div>
+        <small style="color:#A0B4E0; letter-spacing:1px; font-size:0.7rem;">СОБРАННЫЕ МИРЫ</small>
+        <div class="inventory-grid" id="inventory"></div>
+      </div>
+    </aside>
+
+    <main class="game-grid" id="grid"></main>
+  </div>
+
+  <!-- ИНФОРМАЦИОННОЕ ОКНО -->
+  <div class="info-modal" id="info-modal">
+    <div class="info-card">
+      <button onclick="closeInfo()" style="float:right;background:none;border:none;color:white;font-size:1.8rem;cursor:pointer;line-height:1;">&times;</button>
+      <h3 id="info-title" style="font-family:'Orbitron'; margin-bottom:1rem;"></h3>
+      <p id="info-desc" style="color:#cbd5e1; line-height:1.6;"></p>
     </div>
+  </div>
 
-    <script>
-        // Данные о планетах с дополнительной информацией
-        const planets = [
-            {
-                name: "Меркурий",
-                description: "Самая маленькая и близкая к Солнцу планета. Не имеет спутников.",
-                icon: "fas fa-temperature-high",
-                color: "#8c8c8c",
-                diameter: "4879 км",
-                distance: "57.9 млн км",
-                moons: 0
-            },
-            {
-                name: "Венера",
-                description: "Самая горячая планета с плотной токсичной атмосферой.",
-                icon: "fas fa-fire",
-                color: "#e6b87e",
-                diameter: "12104 км",
-                distance: "108.2 млн км",
-                moons: 0
-            },
-            {
-                name: "Земля",
-                description: "Единственная известная планета с жизнью. Имеет один спутник - Луну.",
-                icon: "fas fa-globe-americas",
-                color: "#6b93d6",
-                diameter: "12742 км",
-                distance: "149.6 млн км",
-                moons: 1
-            },
-            {
-                name: "Марс",
-                description: "Красная планета, названа в честь бога войны. Имеет два спутника.",
-                icon: "fas fa-mountain",
-                color: "#c1440e",
-                diameter: "6779 км",
-                distance: "227.9 млн км",
-                moons: 2
-            },
-            {
-                name: "Юпитер",
-                description: "Самая большая планета в Солнечной системе. Газовая планета-гигант.",
-                icon: "fas fa-wind",
-                color: "#d8ca9d",
-                diameter: "139820 км",
-                distance: "778.5 млн км",
-                moons: 79
-            },
-            {
-                name: "Сатурн",
-                description: "Известна своими впечатляющими кольцами из льда и камней.",
-                icon: "fas fa-ring",
-                color: "#e4cd9e",
-                diameter: "116460 км",
-                distance: "1.43 млрд км",
-                moons: 82
-            },
-            {
-                name: "Уран",
-                description: "Ледяной гигант, вращается на боку. Имеет слабые кольца.",
-                icon: "fas fa-snowflake",
-                color: "#d1e7e7",
-                diameter: "50724 км",
-                distance: "2.87 млрд км",
-                moons: 27
-            },
-            {
-                name: "Нептун",
-                description: "Самый ветреный мир в Солнечной системе. Открыт математически.",
-                icon: "fas fa-water",
-                color: "#5b5bff",
-                diameter: "49244 км",
-                distance: "4.5 млрд км",
-                moons: 14
-            },
-            {
-                name: "Плутон",
-                description: "Карликовая планета в поясе Койпера. Имеет пять спутников.",
-                icon: "fas fa-icicles",
-                color: "#a6a6a6",
-                diameter: "2377 км",
-                distance: "5.9 млрд км",
-                moons: 5
-            },
-            {
-                name: "Церера",
-                description: "Карликовая планета в поясе астероидов. Самый крупный астероид.",
-                icon: "fas fa-gem",
-                color: "#b0b0b0",
-                diameter: "946 км",
-                distance: "413.7 млн км",
-                moons: 0
-            },
-            {
-                name: "Эрида",
-                description: "Карликовая планета, находящаяся дальше Плутона.",
-                icon: "fas fa-glacier",
-                color: "#cccccc",
-                diameter: "2326 км",
-                distance: "10.12 млрд км",
-                moons: 1
-            },
-            {
-                name: "Хаумеа",
-                description: "Карликовая планета яйцевидной формы в поясе Койпера.",
-                icon: "fas fa-egg",
-                color: "#e0e0e0",
-                diameter: "≈1960 км",
-                distance: "6.43 млрд км",
-                moons: 2
-            }
-        ];
+  <!-- ЭКРАН ПОБЕДЫ -->
+  <div class="win-overlay" id="win-screen">
+    <div class="win-content">
+      <h2 style="font-family:'Orbitron'; font-size:2rem; margin-bottom:1rem;">СИСТЕМА ИЗУЧЕНА</h2>
+      <p id="win-stars" style="font-size:3.5rem; margin-bottom:1rem;">★★★</p>
+      <p style="color:#A0B4E0; margin-bottom:0.5rem;">Ходов: <span id="final-moves">0</span></p>
+      <p style="color:#A0B4E0; margin-bottom:2rem;">Время: <span id="final-time">00:00</span></p>
+      <button class="btn" onclick="restartGame()" style="margin:0 auto; min-width:200px;">
+        <i class="fas fa-globe"></i> Продолжить
+      </button>
+    </div>
+  </div>
 
-        // Игровые переменные
-        let gameStarted = false;
-        let moves = 0;
-        let matches = 0;
-        let firstCard = null;
-        let secondCard = null;
-        let lockBoard = false;
-        let timer = 0;
-        let timerInterval = null;
-        let difficulty = "medium"; // easy, medium, hard
-        let totalPairs = 8;
-        let totalCards = 16;
-        let hints = 3;
-        let soundEnabled = true;
-        let gamePlanets = [];
+  <script>
+    (function() {
+      // ⚠️ МЕСТА ДЛЯ ВСТАВКИ URL ССЫЛОК НА КАРТИНКИ ПЛАНЕТ
+      const spaceData = [
+        { id: 'sun', name: 'Солнце', type: 'Звезда', desc: 'Центр системы. Температура ядра достигает 15 млн °C. Содержит 99.8% всей массы.', imgUrl: '', planetClass: 'planet-sun' },
+        { id: 'mercury', name: 'Меркурий', type: 'Планета', desc: 'Ближайшая к Солнцу планета. Перепады температур от +430°C до -180°C.', imgUrl: '', planetClass: 'planet-mercury' },
+        { id: 'venus', name: 'Венера', type: 'Планета', desc: 'Самая горячая планета. Атмосфера из углекислого газа создаёт парниковый эффект.', imgUrl: '', planetClass: 'planet-venus' },
+        { id: 'earth', name: 'Земля', type: 'Планета', desc: 'Наш дом. 71% поверхности покрыто водой. Единственная известная планета с жизнью.', imgUrl: '', planetClass: 'planet-earth' },
+        { id: 'mars', name: 'Марс', type: 'Планета', desc: 'Красная планета. Здесь находится Олимп — высочайший вулкан в Солнечной системе.', imgUrl: '', planetClass: 'planet-mars' },
+        { id: 'jupiter', name: 'Юпитер', type: 'Газовый гигант', desc: 'Самая большая планета. Большое Красное Пятно — шторм размером с Землю.', imgUrl: '', planetClass: 'planet-jupiter' },
+        { id: 'saturn', name: 'Сатурн', type: 'Газовый гигант', desc: 'Великолепная система колец из льда и пыли. Плотность меньше плотности воды.', imgUrl: '', planetClass: 'planet-saturn' },
+        { id: 'uranus', name: 'Уран', type: 'Ледяной гигант', desc: 'Вращается «лёжа на боку». Ось наклонена почти на 98 градусов.', imgUrl: '', planetClass: 'planet-uranus' },
+        { id: 'neptune', name: 'Нептун', type: 'Ледяной гигант', desc: 'Самая ветреная планета. Скорость ветра достигает 2100 км/ч.', imgUrl: '', planetClass: 'planet-neptune' },
+        { id: 'moon', name: 'Луна', type: 'Спутник', desc: 'Единственный спутник Земли. Вызывает приливы и всегда повёрнута одной стороной.', imgUrl: 'data:image/jpeg;base64,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', planetClass: 'planet-moon' },
+        { id: 'galaxy', name: 'Млечный Путь', type: 'Галактика', desc: 'Наша галактика. Содержит от 100 до 400 миллиардов звёзд.', imgUrl: 'data:image/jpeg;base64,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', planetClass: 'planet-galaxy' },
+        { id: 'nebula', name: 'Туманность Ориона', type: 'Туманность', desc: 'Звёздные ясли. Здесь прямо сейчас рождаются новые звёзды.', imgUrl: '', planetClass: 'planet-nebula' }
+      ];
 
-        // DOM элементы
-        const gameBoard = document.getElementById('gameBoard');
-        const movesDisplay = document.getElementById('moves');
-        const matchesDisplay = document.getElementById('matches');
-        const timerDisplay = document.getElementById('timer');
-        const difficultyDisplay = document.getElementById('difficulty');
-        const messageDisplay = document.getElementById('message');
-        const progressDisplay = document.getElementById('progress');
-        const progressBar = document.getElementById('progressBar');
-        const startBtn = document.getElementById('startBtn');
-        const hintBtn = document.getElementById('hintBtn');
-        const soundBtn = document.getElementById('soundBtn');
-        const resetBtn = document.getElementById('resetBtn');
-        const winOverlay = document.getElementById('winOverlay');
-        const finalMoves = document.getElementById('finalMoves');
-        const finalTime = document.getElementById('finalTime');
-        const finalScore = document.getElementById('finalScore');
-        const ratingStars = document.getElementById('ratingStars');
-        const winMessage = document.getElementById('winMessage');
-        const playAgainBtn = document.getElementById('playAgainBtn');
-        const difficultyButtons = document.querySelectorAll('.difficulty-btn');
-        const starsContainer = document.getElementById('starsContainer');
+      let state = {
+        cards: [], flipped: [], matched: 0, moves: 0, timer: 0,
+        interval: null, hintsLeft: 2, locked: false, gameStarted: false
+      };
 
-        // Создание звездного фона с анимацией
-        function createStars() {
-            starsContainer.innerHTML = '';
-            
-            // Создаем статические звезды
-            for (let i = 0; i < 200; i++) {
-                const star = document.createElement('div');
-                star.classList.add('star');
-                
-                // Случайный размер и позиция
-                const size = Math.random() * 3 + 1;
-                const x = Math.random() * 100;
-                const y = Math.random() * 100;
-                const duration = Math.random() * 5 + 2;
-                const opacity = Math.random() * 0.8 + 0.2;
-                
-                star.style.width = `${size}px`;
-                star.style.height = `${size}px`;
-                star.style.left = `${x}%`;
-                star.style.top = `${y}%`;
-                star.style.opacity = opacity;
-                star.style.animation = `twinkle ${duration}s infinite alternate`;
-                
-                starsContainer.appendChild(star);
-            }
-            
-            // Создаем падающие звезды
-            createShootingStars();
+      // Генерация частиц
+      function createParticles() {
+        const container = document.getElementById('particles');
+        if (!container) return;
+        container.innerHTML = '';
+        for (let i = 0; i < 25; i++) {
+          const particle = document.createElement('div');
+          particle.className = 'particle';
+          particle.style.left = Math.random() * 100 + '%';
+          particle.style.animationDelay = Math.random() * 8 + 's';
+          particle.style.animationDuration = (Math.random() * 6 + 6) + 's';
+          particle.style.width = (Math.random() * 4 + 2) + 'px';
+          particle.style.height = particle.style.width;
+          particle.style.opacity = Math.random() * 0.5 + 0.2;
+          container.appendChild(particle);
         }
+      }
 
-        // Создание падающих звезд
-        function createShootingStars() {
-            // Удаляем старые падающие звезды
-            const oldStars = document.querySelectorAll('.shooting-star');
-            oldStars.forEach(star => star.remove());
-            
-            // Создаем новые
-            for (let i = 0; i < 3; i++) {
-                setTimeout(() => {
-                    const shootingStar = document.createElement('div');
-                    shootingStar.classList.add('shooting-star');
-                    
-                    const x = Math.random() * 100;
-                    const y = Math.random() * 30;
-                    const duration = Math.random() * 1 + 0.5;
-                    const delay = Math.random() * 10;
-                    
-                    shootingStar.style.left = `${x}%`;
-                    shootingStar.style.top = `${y}%`;
-                    shootingStar.style.animation = `shootStar ${duration}s linear ${delay}s`;
-                    
-                    starsContainer.appendChild(shootingStar);
-                    
-                    // Удаляем после анимации
-                    setTimeout(() => {
-                        if (shootingStar.parentNode) {
-                            shootingStar.remove();
-                        }
-                    }, (duration + delay) * 1000);
-                }, i * 3000);
-            }
-            
-            // Повторяем создание падающих звезд
-            setTimeout(createShootingStars, 15000);
+      function formatTime(sec) {
+        const m = Math.floor(sec / 60);
+        const s = sec % 60;
+        return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+      }
+
+      function startTimer() {
+        if (state.interval) clearInterval(state.interval);
+        state.interval = setInterval(() => {
+          state.timer++;
+          document.getElementById('timer').textContent = formatTime(state.timer);
+        }, 1000);
+      }
+
+      function flipCard(cardEl) {
+        if (state.locked || cardEl.classList.contains('flipped') || cardEl.classList.contains('matched')) return;
+        if (!state.gameStarted) { state.gameStarted = true; startTimer(); }
+        cardEl.classList.add('flipped');
+        state.flipped.push(cardEl);
+        if (state.flipped.length === 2) {
+          state.moves++;
+          document.getElementById('moves').textContent = state.moves;
+          state.locked = true;
+          checkMatch();
         }
+      }
 
-        // Анимация для падающих звезд
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes shootStar {
-                0% { transform: translateX(0) translateY(0); opacity: 0; }
-                10% { opacity: 1; }
-                100% { transform: translateX(-100px) translateY(100px); opacity: 0; }
-            }
-            
-            @keyframes twinkle {
-                0%, 100% { opacity: 0.2; }
-                50% { opacity: 1; }
-            }
-        `;
-        document.head.appendChild(style);
-
-        // Выбор сложности
-        function setDifficulty(level) {
-            difficulty = level;
-            
-            // Обновляем активную кнопку
-            difficultyButtons.forEach(btn => {
-                if (btn.dataset.level === level) {
-                    btn.classList.add('active');
-                } else {
-                    btn.classList.remove('active');
-                }
-            });
-            
-            // Устанавливаем количество пар
-            switch(level) {
-                case 'easy':
-                    totalPairs = 4;
-                    difficultyDisplay.textContent = 'ЛЁГКИЙ';
-                    break;
-                case 'medium':
-                    totalPairs = 8;
-                    difficultyDisplay.textContent = 'СРЕДНИЙ';
-                    break;
-                case 'hard':
-                    totalPairs = 12;
-                    difficultyDisplay.textContent = 'СЛОЖНЫЙ';
-                    break;
-            }
-            
-            totalCards = totalPairs * 2;
-            
-            // Если игра уже начата, перезапускаем
-            if (gameStarted) {
-                startGame();
-            }
+      function checkMatch() {
+        const [c1, c2] = state.flipped;
+        if (c1.dataset.id === c2.dataset.id) {
+          c1.classList.add('matched'); 
+          c2.classList.add('matched');
+          state.matched++;
+          addToInventory(c1.dataset.id);
+          state.flipped = []; 
+          state.locked = false;
+          if (state.matched === spaceData.length) endGame();
+        } else {
+          setTimeout(() => {
+            c1.classList.remove('flipped'); 
+            c2.classList.remove('flipped');
+            state.flipped = []; 
+            state.locked = false;
+          }, 900);
         }
+      }
 
-        // Создание карточек для игры
-        function createCards() {
-            // Очищаем игровое поле
-            gameBoard.innerHTML = '';
-            
-            // Выбираем планеты в зависимости от сложности
-            let selectedPlanets = [];
-            if (difficulty === 'easy') {
-                selectedPlanets = planets.slice(0, 4);
-            } else if (difficulty === 'medium') {
-                selectedPlanets = planets.slice(0, 8);
-            } else {
-                selectedPlanets = planets.slice(0, 12);
-            }
-            
-            // Сохраняем выбранные планеты для использования в игре
-            gamePlanets = [...selectedPlanets];
-            
-            // Создаем два набора карточек (пары)
-            const gameCards = [...selectedPlanets, ...selectedPlanets];
-            
-            // Перемешиваем карточки
-            gameCards.sort(() => Math.random() - 0.5);
-            
-            // Настройка сетки в зависимости от количества карточек
-            if (difficulty === 'easy') {
-                gameBoard.style.gridTemplateColumns = 'repeat(4, 1fr)';
-            } else if (difficulty === 'medium') {
-                gameBoard.style.gridTemplateColumns = 'repeat(4, 1fr)';
-            } else {
-                gameBoard.style.gridTemplateColumns = 'repeat(4, 1fr)';
-            }
-            
-            // Создаем карточки
-            gameCards.forEach((planet, index) => {
-                const card = document.createElement('div');
-                card.classList.add('card');
-                card.dataset.id = index;
-                card.dataset.planet = planet.name;
-                
-                card.innerHTML = `
-                    <div class="card-inner">
-                        <div class="card-front">
-                            <i class="fas fa-question"></i>
-                            <p>ИССЛЕДОВАТЬ</p>
-                        </div>
-                        <div class="card-back">
-                            <div class="planet-icon" style="color: ${planet.color}">
-                                <i class="${planet.icon}"></i>
-                            </div>
-                            <div class="planet-name">${planet.name}</div>
-                            <div class="planet-desc">${planet.description}</div>
-                            <div class="planet-stats">
-                                <div class="stat">
-                                    <div class="stat-label">ДИАМЕТР</div>
-                                    <div class="stat-value">${planet.diameter}</div>
-                                </div>
-                                <div class="stat">
-                                    <div class="stat-label">СПУТНИКИ</div>
-                                    <div class="stat-value">${planet.moons}</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                
-                card.addEventListener('click', () => flipCard(card));
-                gameBoard.appendChild(card);
-            });
-            
-            // Обновляем прогресс
-            updateProgress();
+      function addToInventory(id) {
+        if (document.querySelector(`.inv-badge[data-id="${id}"]`)) return;
+        const data = spaceData.find(d => d.id === id);
+        const badge = document.createElement('div');
+        badge.className = 'inv-badge matched-anim';
+        badge.dataset.id = id;
+        if (data.imgUrl && data.imgUrl.trim() !== '') {
+          badge.style.backgroundImage = `url(${data.imgUrl})`;
+        } else {
+          badge.classList.add(data.planetClass);
         }
+        badge.onclick = () => showInfo(id);
+        document.getElementById('inventory').appendChild(badge);
+        setTimeout(() => badge.classList.remove('matched-anim'), 500);
+      }
 
-        // Переворачивание карточки
-        function flipCard(card) {
-            if (!gameStarted) {
-                showMessage('Сначала начните игру!', 'warning');
-                return;
-            }
-            
-            if (lockBoard || card === firstCard || card.classList.contains('matched')) {
-                return;
-            }
-            
-            // Проигрываем звук
-            if (soundEnabled) playSound('flip');
-            
-            card.classList.add('flipped');
-            
-            if (!firstCard) {
-                // Первая карточка
-                firstCard = card;
-                showMessage(`Открыта ${card.dataset.planet}. Найдите пару!`, 'info');
-                return;
-            }
-            
-            // Вторая карточка
-            secondCard = card;
-            moves++;
-            movesDisplay.textContent = moves;
-            showMessage(`Открыта ${card.dataset.planet}. Проверяем совпадение...`, 'info');
-            lockBoard = true;
-            
-            checkForMatch();
-        }
+      function showInfo(id) {
+        const d = spaceData.find(x => x.id === id);
+        document.getElementById('info-title').textContent = d.name;
+        document.getElementById('info-desc').textContent = d.desc;
+        document.getElementById('info-modal').classList.add('active');
+      }
 
-        // Проверка на совпадение
-        function checkForMatch() {
-            const isMatch = firstCard.dataset.planet === secondCard.dataset.planet;
-            
-            if (isMatch) {
-                // Совпали
-                disableCards();
-                matches++;
-                matchesDisplay.textContent = `${matches} / ${totalPairs}`;
-                
-                // Проигрываем звук
-                if (soundEnabled) playSound('match');
-                
-                // Обновляем прогресс
-                updateProgress();
-                
-                showMessage(`Отлично! Вы нашли пару для ${firstCard.dataset.planet}!`, 'success');
-                
-                if (matches === totalPairs) {
-                    endGame();
-                }
-            } else {
-                // Не совпали
-                // Проигрываем звук
-                if (soundEnabled) playSound('mismatch');
-                
-                // Анимация несовпадения
-                firstCard.classList.add('mismatched');
-                secondCard.classList.add('mismatched');
-                
-                unflipCards();
-                showMessage(`Не совпало. Попробуйте еще раз!`, 'danger');
-            }
-        }
+      window.closeInfo = () => document.getElementById('info-modal').classList.remove('active');
 
-        // Отключение совпавших карточек
-        function disableCards() {
-            firstCard.classList.add('matched');
-            secondCard.classList.remove('mismatched');
-            secondCard.classList.add('matched');
-            
-            resetBoard();
-        }
+      function endGame() {
+        clearInterval(state.interval);
+        document.getElementById('final-moves').textContent = state.moves;
+        document.getElementById('final-time').textContent = formatTime(state.timer);
+        document.getElementById('win-screen').classList.add('visible');
+      }
 
-        // Возврат несовпавших карточек
-        function unflipCards() {
+      function restartGame() {
+        clearInterval(state.interval);
+        state = { cards: [], flipped: [], matched: 0, moves: 0, timer: 0, interval: null, hintsLeft: 2, locked: false, gameStarted: false };
+        document.getElementById('moves').textContent = '0';
+        document.getElementById('timer').textContent = '00:00';
+        document.getElementById('hints-count').textContent = '2';
+        document.getElementById('win-screen').classList.remove('visible');
+        document.getElementById('inventory').innerHTML = '';
+        initBoard();
+      }
+
+      function initBoard() {
+        const grid = document.getElementById('grid');
+        grid.innerHTML = '';
+        const pairs = [...spaceData, ...spaceData].sort(() => Math.random() - 0.5);
+        pairs.forEach((item, index) => {
+          const wrapper = document.createElement('div');
+          wrapper.className = 'card-wrapper';
+          wrapper.style.animationDelay = `${index * 0.05}s`;
+          
+          const inner = document.createElement('div');
+          inner.className = 'card-inner';
+          inner.dataset.id = item.id;
+          
+          let frontStyle = '';
+          if (item.imgUrl && item.imgUrl.trim() !== '') {
+            frontStyle = `background-image: url('${item.imgUrl}'); background-size: cover;`;
+          }
+          
+          inner.innerHTML = `
+            <div class="card-face card-front ${(!item.imgUrl || item.imgUrl.trim() === '') ? item.planetClass : ''}" style="${frontStyle}"></div>
+            <div class="card-face card-back"></div>
+          `;
+          wrapper.appendChild(inner);
+          wrapper.addEventListener('click', () => flipCard(inner));
+          grid.appendChild(wrapper);
+          state.cards.push(inner);
+        });
+      }
+
+      document.getElementById('hint-btn').addEventListener('click', () => {
+        if (state.locked || state.hintsLeft <= 0) return;
+        if (!state.gameStarted) { state.gameStarted = true; startTimer(); }
+        state.hintsLeft--;
+        document.getElementById('hints-count').textContent = state.hintsLeft;
+        if (state.hintsLeft === 0) document.getElementById('hint-btn').disabled = true;
+        state.locked = true;
+        const hidden = state.cards.filter(c => !c.classList.contains('matched') && !c.classList.contains('flipped'));
+        hidden.forEach(c => c.classList.add('flipped'));
+        setTimeout(() => {
+          hidden.forEach(c => c.classList.remove('flipped'));
+          state.locked = false;
+        }, 1400);
+      });
+
+      window.restartGame = restartGame;
+      createParticles();
+      initBoard();
+
+      // ЗАГРУЗКА
+      window.addEventListener('load', () => {
+        const authorsText = "Авторы: Голосов Даниил Алексеевич | Баринова София Владимировна";
+        const container = document.getElementById('authors-loader-text');
+        let i = 0;
+        function typeWriter() {
+          if (i < authorsText.length) {
+            container.textContent += authorsText.charAt(i);
+            i++;
+            setTimeout(typeWriter, 40);
+          } else {
+            document.getElementById('loading-status').textContent = "Authorization successful. Welcome.";
             setTimeout(() => {
-                firstCard.classList.remove('flipped');
-                firstCard.classList.remove('mismatched');
-                secondCard.classList.remove('flipped');
-                secondCard.classList.remove('mismatched');
-                
-                resetBoard();
-            }, 1500);
+              document.getElementById('loading-screen').classList.add('align-planets');
+              setTimeout(() => {
+                document.getElementById('loading-screen').style.opacity = '0';
+                setTimeout(() => { 
+                  document.getElementById('loading-screen').style.display = 'none'; 
+                }, 1000);
+              }, 1500);
+            }, 800);
+          }
         }
+        setTimeout(typeWriter, 800);
+      });
 
-        // Сброс состояния после проверки
-        function resetBoard() {
-            [firstCard, secondCard, lockBoard] = [null, null, false];
-        }
-
-        // Начало новой игры
-        function startGame() {
-            gameStarted = true;
-            moves = 0;
-            matches = 0;
-            hints = 3;
-            timer = 0;
-            
-            movesDisplay.textContent = moves;
-            matchesDisplay.textContent = `${matches} / ${totalPairs}`;
-            timerDisplay.textContent = '00:00';
-            hintBtn.innerHTML = '<i class="fas fa-lightbulb"></i> ПОДСКАЗКА (3)';
-            
-            // Обновляем сообщение
-            showMessage('Игра началась! Исследуйте планеты и находите пары!', 'success');
-            
-            // Запуск таймера
-            clearInterval(timerInterval);
-            timerInterval = setInterval(() => {
-                timer++;
-                updateTimerDisplay();
-            }, 1000);
-            
-            // Создание карточек
-            createCards();
-            
-            // Скрыть сообщение о победе
-            winOverlay.style.display = 'none';
-        }
-
-        // Обновление таймера
-        function updateTimerDisplay() {
-            const minutes = Math.floor(timer / 60).toString().padStart(2, '0');
-            const seconds = (timer % 60).toString().padStart(2, '0');
-            timerDisplay.textContent = `${minutes}:${seconds}`;
-        }
-
-        // Обновление прогресса
-        function updateProgress() {
-            const progress = Math.round((matches / totalPairs) * 100);
-            progressDisplay.textContent = progress;
-            progressBar.style.width = `${progress}%`;
-        }
-
-        // Завершение игры
-        function endGame() {
-            clearInterval(timerInterval);
-            gameStarted = false;
-            
-            // Расчет очков
-            const score = calculateScore();
-            
-            // Показ сообщения о победе
-            finalMoves.textContent = moves;
-            
-            const minutes = Math.floor(timer / 60).toString().padStart(2, '0');
-            const seconds = (timer % 60).toString().padStart(2, '0');
-            finalTime.textContent = `${minutes}:${seconds}`;
-            
-            finalScore.textContent = score;
-            
-            // Рейтинг в звездах
-            updateRating(score);
-            
-            // Сообщение в зависимости от результата
-            updateWinMessage(score);
-            
-            winOverlay.style.display = 'flex';
-            
-            // Проигрываем звук победы
-            if (soundEnabled) playSound('win');
-        }
-
-        // Расчет очков
-        function calculateScore() {
-            // Базовые очки: 1000 за каждую пару
-            let score = totalPairs * 1000;
-            
-            // Бонус за скорость: чем быстрее, тем больше бонус
-            const timeBonus = Math.max(0, 5000 - timer * 10);
-            score += timeBonus;
-            
-            // Бонус за эффективность: чем меньше ходов, тем больше бонус
-            const minMoves = totalPairs * 2;
-            const movesBonus = Math.max(0, 3000 - (moves - minMoves) * 50);
-            score += movesBonus;
-            
-            // Штраф за использование подсказок
-            const hintsUsed = 3 - hints;
-            score -= hintsUsed * 200;
-            
-            // Ограничиваем минимальный счет
-            return Math.max(100, Math.round(score));
-        }
-
-        // Обновление рейтинга в звездах
-        function updateRating(score) {
-            ratingStars.innerHTML = '';
-            
-            // Максимальный возможный счет
-            const maxScore = totalPairs * 1000 + 5000 + 3000;
-            const rating = Math.min(5, Math.ceil((score / maxScore) * 5));
-            
-            for (let i = 1; i <= 5; i++) {
-                const star = document.createElement('i');
-                if (i <= rating) {
-                    star.className = 'fas fa-star';
-                } else {
-                    star.className = 'far fa-star';
-                }
-                ratingStars.appendChild(star);
-            }
-        }
-
-        // Обновление сообщения о победе
-        function updateWinMessage(score) {
-            let message = '';
-            
-            if (score > 15000) {
-                message = 'Потрясающе! Вы - настоящий космический гений!';
-            } else if (score > 10000) {
-                message = 'Отличный результат! Вы - опытный исследователь космоса!';
-            } else if (score > 5000) {
-                message = 'Хорошая работа! Вы знаете планеты Солнечной системы!';
-            } else {
-                message = 'Неплохо! Продолжайте исследовать космос!';
-            }
-            
-            winMessage.textContent = message;
-        }
-
-        // Функция подсказки
-        function showHint() {
-            if (!gameStarted) {
-                showMessage('Сначала начните игру!', 'warning');
-                return;
-            }
-            
-            if (hints <= 0) {
-                showMessage('Подсказки закончились!', 'warning');
-                return;
-            }
-            
-            // Находим все несовпавшие и не перевернутые карточки
-            const unmatchedCards = Array.from(document.querySelectorAll('.card:not(.matched):not(.flipped)'));
-            
-            if (unmatchedCards.length === 0) return;
-            
-            // Уменьшаем количество подсказок
-            hints--;
-            hintBtn.innerHTML = `<i class="fas fa-lightbulb"></i> ПОДСКАЗКА (${hints})`;
-            
-            // Выбираем случайную карточку для подсказки
-            const randomCard = unmatchedCards[Math.floor(Math.random() * unmatchedCards.length)];
-            
-            // Анимация подсказки
-            randomCard.style.animation = 'pulse 1s 3';
-            showMessage(`Подсказка! Обратите внимание на эту карточку!`, 'info');
-            
-            // Проигрываем звук
-            if (soundEnabled) playSound('hint');
-            
-            // Сбрасываем анимацию после завершения
-            setTimeout(() => {
-                randomCard.style.animation = '';
-            }, 3000);
-        }
-
-        // Переключение звука
-        function toggleSound() {
-            soundEnabled = !soundEnabled;
-            soundBtn.innerHTML = `<i class="fas fa-volume-${soundEnabled ? 'up' : 'mute'}"></i> ЗВУК: ${soundEnabled ? 'ВКЛ' : 'ВЫКЛ'}`;
-            
-            // Проигрываем тестовый звук при включении
-            if (soundEnabled) playSound('flip');
-        }
-
-        // Проигрывание звуков (эмуляция)
-        function playSound(type) {
-            // В реальном приложении здесь были бы настоящие звуковые файлы
-            console.log(`Playing sound: ${type}`);
-            
-            // Для демонстрации создаем простые звуки с помощью Web Audio API
-            if (window.AudioContext) {
-                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                
-                let frequency = 440;
-                let duration = 0.1;
-                
-                switch(type) {
-                    case 'flip':
-                        frequency = 523.25; // C5
-                        duration = 0.1;
-                        break;
-                    case 'match':
-                        frequency = 659.25; // E5
-                        duration = 0.3;
-                        break;
-                    case 'mismatch':
-                        frequency = 392; // G4
-                        duration = 0.2;
-                        break;
-                    case 'win':
-                        // Мажорный аккорд
-                        playChord([523.25, 659.25, 783.99]);
-                        return;
-                    case 'hint':
-                        frequency = 830.61; // G#5
-                        duration = 0.2;
-                        break;
-                }
-                
-                // Создаем звук
-                const oscillator = audioContext.createOscillator();
-                const gainNode = audioContext.createGain();
-                
-                oscillator.connect(gainNode);
-                gainNode.connect(audioContext.destination);
-                
-                oscillator.frequency.value = frequency;
-                oscillator.type = 'sine';
-                
-                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
-                
-                oscillator.start(audioContext.currentTime);
-                oscillator.stop(audioContext.currentTime + duration);
-            }
-        }
-
-        // Проигрывание аккорда (для победы)
-        function playChord(frequencies) {
-            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            const duration = 0.5;
-            
-            frequencies.forEach((freq, index) => {
-                setTimeout(() => {
-                    const oscillator = audioContext.createOscillator();
-                    const gainNode = audioContext.createGain();
-                    
-                    oscillator.connect(gainNode);
-                    gainNode.connect(audioContext.destination);
-                    
-                    oscillator.frequency.value = freq;
-                    oscillator.type = 'sine';
-                    
-                    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
-                    
-                    oscillator.start(audioContext.currentTime);
-                    oscillator.stop(audioContext.currentTime + duration);
-                }, index * 100);
-            });
-        }
-
-        // Показать сообщение с разными типами
-        function showMessage(text, type = 'info') {
-            messageDisplay.textContent = text;
-            
-            // Сбрасываем цвет
-            messageDisplay.style.color = '';
-            
-            // Устанавливаем цвет в зависимости от типа
-            switch(type) {
-                case 'success':
-                    messageDisplay.style.color = '#2ecc71';
-                    break;
-                case 'warning':
-                    messageDisplay.style.color = '#f39c12';
-                    break;
-                case 'danger':
-                    messageDisplay.style.color = '#e74c3c';
-                    break;
-                case 'info':
-                    messageDisplay.style.color = '#4a9ff5';
-                    break;
-            }
-        }
-
-        // Сброс игры
-        function resetGame() {
-            gameStarted = false;
-            clearInterval(timerInterval);
-            createCards();
-            
-            moves = 0;
-            matches = 0;
-            hints = 3;
-            timer = 0;
-            
-            movesDisplay.textContent = moves;
-            matchesDisplay.textContent = `${matches} / ${totalPairs}`;
-            timerDisplay.textContent = '00:00';
-            hintBtn.innerHTML = '<i class="fas fa-lightbulb"></i> ПОДСКАЗКА (3)';
-            
-            showMessage('Игра сброшена. Нажмите "НОВАЯ ИГРА" чтобы начать!', 'info');
-            updateProgress();
-            
-            winOverlay.style.display = 'none';
-        }
-
-        // Инициализация игры
-        function initGame() {
-            createStars();
-            createCards();
-            
-            // Назначение обработчиков событий
-            startBtn.addEventListener('click', startGame);
-            hintBtn.addEventListener('click', showHint);
-            soundBtn.addEventListener('click', toggleSound);
-            resetBtn.addEventListener('click', resetGame);
-            playAgainBtn.addEventListener('click', startGame);
-            
-            // Обработчики для кнопок сложности
-            difficultyButtons.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    setDifficulty(btn.dataset.level);
-                });
-            });
-            
-            // Инициализация сообщения
-            showMessage('Нажмите "НОВАЯ ИГРА", чтобы начать космическое приключение!', 'info');
-        }
-
-        // Запуск игры при загрузке страницы
-        window.addEventListener('DOMContentLoaded', initGame);
-    </script>
+      // Закрытие модального окна по клику вне карточки
+      document.getElementById('info-modal').addEventListener('click', function(e) {
+        if (e.target === this) closeInfo();
+      });
+    })();
+  </script>
 </body>
 </html>
