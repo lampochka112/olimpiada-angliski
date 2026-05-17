@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Stellary Memory — Космический кот</title>
+  <title>Stellary Memory</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Orbitron:wght@400;600;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -45,6 +45,7 @@
       overflow-y: auto;
     }
 
+    /* ============ ГЛУБОКИЙ КОСМИЧЕСКИЙ ФОН ============ */
     .cosmic-bg {
       position: fixed;
       inset: 0;
@@ -172,6 +173,7 @@
       100% { transform: translateY(-10vh) scale(1.8); opacity: 0; }
     }
 
+    /* ============ ЗАГРУЗОЧНЫЙ ЭКРАН ============ */
     #loading-screen {
       position: fixed;
       inset: 0;
@@ -228,8 +230,10 @@
 
     .orbit-1 { width: 120px; height: 120px; animation-duration: 3.5s; }
     .orbit-1 .loader-planet-dot { width: 9px; height: 9px; top: 8px; left: 50%; background: #38bdf8; color: #38bdf8; }
+
     .orbit-2 { width: 200px; height: 200px; animation-duration: 6s; animation-direction: reverse; }
     .orbit-2 .loader-planet-dot { width: 12px; height: 12px; top: 18px; left: 15%; background: #c084fc; color: #c084fc; }
+
     .orbit-3 { width: 290px; height: 290px; animation-duration: 9s; }
     .orbit-3 .loader-planet-dot { width: 15px; height: 15px; bottom: 25px; right: 18%; background: #f472b6; color: #f472b6; }
 
@@ -279,6 +283,7 @@
 
     @keyframes cursorBlink { 50% { opacity: 0; } }
 
+    /* ============ ОСНОВНОЙ КОНТЕЙНЕР ============ */
     .app-shell {
       display: flex;
       width: 100%;
@@ -289,6 +294,7 @@
       align-items: flex-start;
     }
 
+    /* ============ САЙДБАР ============ */
     .sidebar-panel {
       width: 285px;
       flex-shrink: 0;
@@ -301,7 +307,10 @@
       display: flex;
       flex-direction: column;
       gap: 1.4rem;
-      box-shadow: 0 50px 80px -30px rgba(0,0,0,0.9), inset 0 0 60px rgba(34, 211, 238, 0.04), inset 0 1px 0 rgba(255,255,255,0.04);
+      box-shadow:
+        0 50px 80px -30px rgba(0,0,0,0.9),
+        inset 0 0 60px rgba(34, 211, 238, 0.04),
+        inset 0 1px 0 rgba(255,255,255,0.04);
       color: white;
       position: relative;
       overflow: hidden;
@@ -334,6 +343,7 @@
       z-index: 1;
     }
 
+    /* ============ ПЕРЕКЛЮЧАТЕЛЬ ИГР ============ */
     .game-switcher {
       position: relative;
       z-index: 1;
@@ -586,6 +596,7 @@
       100% { transform: scale(1); }
     }
 
+    /* ============ ИГРОВАЯ СЕТКА (MEMORY) ============ */
     .game-grid {
       flex: 1;
       display: grid;
@@ -688,6 +699,7 @@
       100% { box-shadow: inset 0 0 20px rgba(34,211,238,0.1), 0 0 0 rgba(34,211,238,0); }
     }
 
+    /* ============ ИГРА «СОЕДИНИ ПЛАНЕТЫ СО СПУТНИКАМИ» ============ */
     .match-game-container {
       flex: 1;
       display: none;
@@ -805,6 +817,7 @@
       flex-shrink: 0;
     }
 
+    /* Линии соединения */
     .connections-canvas {
       position: fixed;
       inset: 0;
@@ -821,6 +834,7 @@
       margin-top: 1rem;
     }
 
+    /* Планетарные градиенты */
     .planet-sun { background-image: radial-gradient(circle at 38% 38%, #fef08a 0%, #f59e0b 40%, #b45309 100%); }
     .planet-mercury { background-image: radial-gradient(circle at 38% 38%, #d1d5db 0%, #6b7280 50%, #374151 100%); }
     .planet-venus { background-image: radial-gradient(circle at 42% 42%, #fcd34d 0%, #d97706 45%, #78350f 100%); }
@@ -834,6 +848,7 @@
     .planet-galaxy { background-image: radial-gradient(circle at 38% 38%, #c4b5fd 0%, #7c3aed 45%, #2e1065 100%); }
     .planet-nebula { background-image: radial-gradient(circle at 38% 38%, #f9a8d4 0%, #db2777 45%, #831843 100%); }
 
+    /* ============ МОДАЛЬНЫЕ ОКНА ============ */
     .info-modal {
       position: fixed;
       inset: 0;
@@ -1171,7 +1186,7 @@
       color: #f0f4ff;
     }
 
-    /* ============ СУПЕР-КЛАССНЫЙ КОТ-АСТРОНАВТ ============ */
+    /* ============ КОТ-АСТРОНАВТ (ПОМОЩНИК) - БОЛЕЕ РЕАЛИСТИЧНЫЙ ============ */
     #space-assistant {
       position: fixed;
       bottom: 20px;
@@ -1179,110 +1194,51 @@
       z-index: 9999;
       display: flex;
       align-items: flex-end;
-      gap: 12px;
+      gap: 10px;
       pointer-events: none;
-      filter: drop-shadow(0 0 25px rgba(255, 100, 0, 0.5));
+      filter: drop-shadow(0 0 15px rgba(34,211,238,0.4));
       transition: transform 0.3s ease;
     }
 
     .assistant-avatar {
-      width: 90px;
-      height: 90px;
-      background: radial-gradient(ellipse at 35% 35%, #ffaa33, #e06e1a, #b84500);
+      width: 75px;
+      height: 75px;
+      background: linear-gradient(135deg, #f5a623, #e07c1f);
       border-radius: 50%;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      border: 3px solid #ffdd77;
-      box-shadow: 0 0 30px rgba(255, 180, 50, 0.7), inset 0 2px 5px rgba(255,255,200,0.5);
-      animation: floatCat 2.5s ease-in-out infinite;
+      border: 2px solid #ffd700;
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+      animation: floatAssistant 3s ease-in-out infinite;
       cursor: pointer;
       pointer-events: auto;
       transition: 0.2s;
       position: relative;
-      overflow: visible;
     }
 
-    /* Большие треугольные уши */
+    /* Ушки кота */
     .assistant-avatar::before,
     .assistant-avatar::after {
       content: '';
       position: absolute;
       width: 0;
       height: 0;
-      border-left: 16px solid transparent;
-      border-right: 16px solid transparent;
-      border-bottom: 30px solid #ff9933;
-      top: -14px;
-      z-index: 2;
-      filter: drop-shadow(0 2px 3px rgba(0,0,0,0.2));
+      border-left: 12px solid transparent;
+      border-right: 12px solid transparent;
+      border-bottom: 22px solid #f5a623;
+      top: -8px;
     }
 
     .assistant-avatar::before {
-      left: 4px;
-      transform: rotate(-30deg);
+      left: 8px;
+      transform: rotate(-25deg);
     }
 
     .assistant-avatar::after {
-      right: 4px;
-      transform: rotate(30deg);
-    }
-
-    /* Розовая внутренность ушей */
-    .ear-inner::before,
-    .ear-inner::after {
-      content: '';
-      position: absolute;
-      width: 0;
-      height: 0;
-      border-left: 9px solid transparent;
-      border-right: 9px solid transparent;
-      border-bottom: 18px solid #ffb7c5;
-      top: -8px;
-      z-index: 3;
-    }
-
-    .ear-inner::before {
-      left: 12px;
-      transform: rotate(-30deg);
-    }
-
-    .ear-inner::after {
-      right: 12px;
-      transform: rotate(30deg);
-    }
-
-    /* Пушистые щёчки */
-    .cat-cheeks {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-      pointer-events: none;
-    }
-
-    .cat-cheeks::before,
-    .cat-cheeks::after {
-      content: '⚪⚪';
-      position: absolute;
-      font-size: 14px;
-      color: rgba(255,200,150,0.6);
-      letter-spacing: -3px;
-      text-shadow: 0 0 3px #ffaa66;
-    }
-
-    .cat-cheeks::before {
-      top: 48px;
-      left: -8px;
-      transform: rotate(-10deg);
-    }
-
-    .cat-cheeks::after {
-      top: 48px;
-      right: -8px;
-      transform: rotate(10deg);
+      right: 8px;
+      transform: rotate(25deg);
     }
 
     /* Лицо кота */
@@ -1293,70 +1249,48 @@
       justify-content: center;
       width: 100%;
       height: 100%;
-      position: relative;
-      z-index: 5;
     }
 
     .cat-eyes {
       display: flex;
-      gap: 14px;
-      margin-bottom: 6px;
+      gap: 12px;
+      margin-bottom: 8px;
     }
 
     .cat-eye {
-      width: 14px;
-      height: 16px;
-      background: #1a2a1a;
+      width: 10px;
+      height: 12px;
+      background: #1a1a2e;
       border-radius: 50%;
       position: relative;
-      box-shadow: 0 0 3px #000;
-      overflow: hidden;
     }
 
     .cat-eye::after {
       content: '';
       position: absolute;
-      width: 6px;
-      height: 9px;
-      background: #aaffdd;
+      width: 4px;
+      height: 6px;
+      background: #fff;
       border-radius: 50%;
       top: 2px;
-      left: 4px;
-      box-shadow: 0 0 4px #88ffcc;
-      animation: eyeGlow 3s infinite;
-    }
-
-    @keyframes eyeGlow {
-      0%, 100% { background: #aaffdd; box-shadow: 0 0 4px #88ffcc; }
-      50% { background: #ffdd88; box-shadow: 0 0 8px #ffaa44; }
-    }
-
-    .cat-eye.blink {
-      animation: blink 4s infinite;
-    }
-
-    @keyframes blink {
-      0%, 94%, 100% { transform: scaleY(1); }
-      97% { transform: scaleY(0.05); }
+      left: 3px;
     }
 
     .cat-nose {
-      width: 10px;
-      height: 8px;
-      background: #ff6666;
+      width: 8px;
+      height: 6px;
+      background: #ff6b6b;
       border-radius: 50%;
       margin-bottom: 2px;
-      box-shadow: 0 0 5px #ff8888;
     }
 
     .cat-mouth {
-      font-size: 13px;
+      font-size: 10px;
       line-height: 1;
-      color: #4a2a0a;
-      filter: drop-shadow(0 0 2px #ffcc88);
+      color: #2d1b00;
     }
 
-    /* Длинные усы */
+    /* Усы */
     .cat-whiskers {
       position: absolute;
       width: 100%;
@@ -1368,135 +1302,72 @@
 
     .cat-whiskers::before,
     .cat-whiskers::after {
-      content: '~~~~';
+      content: '~~~';
       position: absolute;
-      font-size: 11px;
-      color: rgba(255,255,220,0.9);
+      font-size: 10px;
+      color: rgba(255,255,255,0.6);
       letter-spacing: 2px;
-      text-shadow: 0 0 2px black;
-      font-weight: bold;
     }
 
     .cat-whiskers::before {
-      top: 45px;
-      left: -22px;
-      transform: rotate(-20deg);
+      top: 35px;
+      left: -18px;
+      transform: rotate(-15deg);
     }
 
     .cat-whiskers::after {
-      top: 45px;
-      right: -22px;
-      transform: rotate(20deg);
+      top: 35px;
+      right: -18px;
+      transform: rotate(15deg);
     }
 
-    /* Пушистый хвост с анимацией */
-    .cat-tail {
-      position: absolute;
-      bottom: -20px;
-      right: -25px;
-      width: 50px;
-      height: 50px;
-      background: radial-gradient(ellipse at 30% 30%, #ffaa44, #cc6600);
-      border-radius: 60% 40% 50% 50%;
-      transform: rotate(35deg);
-      z-index: 0;
-      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
-      animation: tailWag 1.8s ease-in-out infinite;
-      transform-origin: top left;
-    }
-
-    @keyframes tailWag {
-      0%, 100% { transform: rotate(30deg) scale(1); }
-      50% { transform: rotate(50deg) scale(1.08); }
-    }
-
-    /* Шлем астронавта с отражением и бликом */
+    /* Шлем астронавта */
     .cat-helmet {
       position: absolute;
       width: 100%;
       height: 100%;
       border-radius: 50%;
-      background: radial-gradient(circle at 25% 25%, rgba(255,255,255,0.35), transparent 75%);
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.3), transparent 70%);
       pointer-events: none;
-      z-index: 6;
     }
 
-    .cat-helmet::after {
-      content: '';
-      position: absolute;
-      top: 12%;
-      left: 18%;
-      width: 28%;
-      height: 22%;
-      background: radial-gradient(ellipse, rgba(255,255,255,0.7), transparent 80%);
-      border-radius: 50%;
-      filter: blur(2px);
-    }
-
-    /* Анимация парения */
-    @keyframes floatCat {
-      0%, 100% { transform: translateY(0px) rotate(0deg); }
-      50% { transform: translateY(-12px) rotate(3deg); }
+    @keyframes floatAssistant {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
     }
 
     .assistant-avatar:active {
-      transform: scale(0.96);
-      transition: 0.05s;
+      transform: scale(0.95);
     }
 
-    /* Облачко с текстом */
     .assistant-bubble {
-      background: linear-gradient(135deg, rgba(10, 20, 45, 0.98), rgba(5, 10, 30, 0.98));
-      backdrop-filter: blur(16px);
-      border-radius: 28px 28px 28px 12px;
-      padding: 12px 20px;
-      max-width: 280px;
-      font-size: 0.9rem;
-      color: #ffe8cc;
-      border: 1px solid #ffaa55;
-      box-shadow: 0 0 30px rgba(255, 170, 85, 0.4);
+      background: rgba(10, 20, 45, 0.95);
+      backdrop-filter: blur(12px);
+      border-radius: 20px;
+      padding: 10px 18px;
+      max-width: 260px;
+      font-size: 0.85rem;
+      color: #e2e8f0;
+      border: 1px solid #22d3ee;
+      box-shadow: 0 0 20px #22d3ee40;
       font-family: 'Inter', sans-serif;
-      animation: bubbleAppear 0.35s ease-out;
+      animation: bubbleAppear 0.3s ease-out;
       pointer-events: none;
       transition: opacity 0.3s;
-      position: relative;
-      font-weight: 500;
-    }
-
-    .assistant-bubble::before {
-      content: '';
-      position: absolute;
-      bottom: 12px;
-      right: -12px;
-      width: 0;
-      height: 0;
-      border-left: 12px solid rgba(10, 20, 45, 0.98);
-      border-top: 8px solid transparent;
-      border-bottom: 8px solid transparent;
     }
 
     @keyframes bubbleAppear {
       from {
         opacity: 0;
-        transform: translateX(25px) scale(0.9);
+        transform: translateX(20px);
       }
       to {
         opacity: 1;
-        transform: translateX(0) scale(1);
+        transform: translateX(0);
       }
     }
 
-    /* Адаптивность для кота */
-    @media (max-width: 768px) {
-      #space-assistant { bottom: 10px; right: 10px; }
-      .assistant-avatar { width: 70px; height: 70px; }
-      .assistant-bubble { max-width: 200px; font-size: 0.75rem; padding: 8px 14px; }
-      .cat-tail { width: 35px; height: 35px; bottom: -15px; right: -18px; }
-      .cat-whiskers::before, .cat-whiskers::after { font-size: 9px; letter-spacing: 1px; }
-      .cat-eye { width: 10px; height: 12px; }
-      .cat-nose { width: 7px; height: 6px; }
-    }
-
+    /* ============ АДАПТИВНОСТЬ ============ */
     @media (max-width: 1300px) {
       .game-grid { grid-template-columns: repeat(6, 1fr); gap: 0.9rem; }
       .sidebar-panel { width: 260px; }
@@ -1544,6 +1415,9 @@
       .library-title { font-size: 1.4rem; }
       .match-columns { flex-direction: column; align-items: center; gap: 1rem; }
       .match-column { min-width: auto; width: 100%; max-width: 350px; }
+      #space-assistant { bottom: 10px; right: 10px; }
+      .assistant-avatar { width: 60px; height: 60px; }
+      .assistant-bubble { max-width: 200px; font-size: 0.75rem; padding: 8px 12px; }
     }
 
     @media (max-width: 480px) {
@@ -1592,6 +1466,7 @@
     <div class="floating-dust" id="floating-dust"></div>
   </div>
 
+  <!-- Canvas для линий соединения в игре «спутники» -->
   <canvas class="connections-canvas" id="connections-canvas"></canvas>
 
   <!-- ============ ЗАГРУЗОЧНЫЙ ЭКРАН ============ -->
@@ -1617,6 +1492,7 @@
     <aside class="sidebar-panel">
       <div class="brand-logo">Stellary Memory</div>
 
+      <!-- Переключатель игр -->
       <div class="game-switcher">
         <button class="switch-btn active" data-game="memory" id="switch-memory">
           <i class="fas fa-brain"></i> Memory
@@ -1664,8 +1540,10 @@
       </div>
     </aside>
 
+    <!-- Игровое поле Memory -->
     <main class="game-grid" id="grid"></main>
 
+    <!-- Игровое поле Спутники -->
     <div class="match-game-container" id="match-game">
       <div class="match-columns">
         <div class="match-column" id="planets-column">
@@ -1679,29 +1557,26 @@
     </div>
   </div>
 
-  <!-- ============ СУПЕР-КОТ-АСТРОНАВТ ============ -->
+  <!-- ============ КОТ-АСТРОНАВТ (ПОМОЩНИК) ============ -->
   <div id="space-assistant">
     <div class="assistant-avatar" id="assistant-avatar">
-      <div class="ear-inner"></div>
-      <div class="cat-cheeks"></div>
       <div class="cat-face">
         <div class="cat-eyes">
-          <div class="cat-eye blink"></div>
-          <div class="cat-eye blink"></div>
+          <div class="cat-eye"></div>
+          <div class="cat-eye"></div>
         </div>
         <div class="cat-nose"></div>
         <div class="cat-mouth">😺</div>
       </div>
       <div class="cat-whiskers"></div>
       <div class="cat-helmet"></div>
-      <div class="cat-tail"></div>
     </div>
     <div class="assistant-bubble" id="assistant-bubble">
-      🐱🚀 Привет! Я Барсик — твой звёздный проводник!
+      Мяу! Я звёздный кот Барсик. Помогу тебе исследовать космос 🌟
     </div>
   </div>
 
-  <!-- ============ МОДАЛЬНЫЕ ОКНА ============ -->
+  <!-- ============ ИНФО-ОКНО ============ -->
   <div class="info-modal" id="info-modal">
     <div class="info-card">
       <button onclick="closeInfo()" style="float:right;background:none;border:none;color:white;font-size:2rem;cursor:pointer;line-height:1;opacity:0.7;">&times;</button>
@@ -1710,6 +1585,7 @@
     </div>
   </div>
 
+  <!-- ============ БИБЛИОТЕКА (ШАПКА СТАТИЧЕСКАЯ) ============ -->
   <div class="library-modal" id="library-modal">
     <div class="library-container">
       <div class="library-header">
@@ -1719,27 +1595,41 @@
         </h2>
         <button class="library-close" onclick="closeLibrary()">&times;</button>
       </div>
+
       <div id="library-content">
         <div class="library-category">
-          <div class="category-title"><div class="category-icon"><i class="fas fa-star"></i></div>5–7 классы • Начальное знакомство</div>
+          <div class="category-title">
+            <div class="category-icon"><i class="fas fa-star"></i></div>
+            5–7 классы • Начальное знакомство
+          </div>
           <div class="books-grid" id="books-5-7"></div>
         </div>
         <div class="library-category">
-          <div class="category-title"><div class="category-icon"><i class="fas fa-meteor"></i></div>8–9 классы • Базовый курс</div>
+          <div class="category-title">
+            <div class="category-icon"><i class="fas fa-meteor"></i></div>
+            8–9 классы • Базовый курс
+          </div>
           <div class="books-grid" id="books-8-9"></div>
         </div>
         <div class="library-category">
-          <div class="category-title"><div class="category-icon"><i class="fas fa-satellite"></i></div>10–11 классы • Углублённый уровень</div>
+          <div class="category-title">
+            <div class="category-icon"><i class="fas fa-satellite"></i></div>
+            10–11 классы • Углублённый уровень
+          </div>
           <div class="books-grid" id="books-10-11"></div>
         </div>
         <div class="library-category">
-          <div class="category-title"><div class="category-icon"><i class="fas fa-user-astronaut"></i></div>Курсы и ВУЗ • Профессиональная литература</div>
+          <div class="category-title">
+            <div class="category-icon"><i class="fas fa-user-astronaut"></i></div>
+            Курсы и ВУЗ • Профессиональная литература
+          </div>
           <div class="books-grid" id="books-course"></div>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- ============ ЭКРАН ПОБЕДЫ ============ -->
   <div class="win-overlay" id="win-screen">
     <div class="win-content">
       <h2 style="font-family:'Orbitron'; font-size:2rem; margin-bottom:0.5rem; letter-spacing:2px;">ГАЛАКТИКА ОТКРЫТА</h2>
@@ -1749,39 +1639,78 @@
         <div class="rank-title" id="rank-title"></div>
       </div>
       <div class="score-details">
-        <div class="score-item"><div class="score-item-label">Ходов</div><div class="score-item-value" id="final-moves">0</div></div>
-        <div class="score-item"><div class="score-item-label">Время</div><div class="score-item-value" id="final-time">00:00</div></div>
-        <div class="score-item"><div class="score-item-label">Точность</div><div class="score-item-value" id="final-accuracy">100%</div></div>
-        <div class="score-item"><div class="score-item-label">Рейтинг</div><div class="score-item-value" id="final-score">0</div></div>
+        <div class="score-item">
+          <div class="score-item-label">Ходов</div>
+          <div class="score-item-value" id="final-moves">0</div>
+        </div>
+        <div class="score-item">
+          <div class="score-item-label">Время</div>
+          <div class="score-item-value" id="final-time">00:00</div>
+        </div>
+        <div class="score-item">
+          <div class="score-item-label">Точность</div>
+          <div class="score-item-value" id="final-accuracy">100%</div>
+        </div>
+        <div class="score-item">
+          <div class="score-item-label">Рейтинг</div>
+          <div class="score-item-value" id="final-score">0</div>
+        </div>
       </div>
-      <button class="cosmic-btn" id="win-restart-btn" style="margin:0 auto; min-width:220px;"><i class="fas fa-globe"></i> Новое исследование</button>
+      <button class="cosmic-btn" id="win-restart-btn" style="margin:0 auto; min-width:220px;">
+        <i class="fas fa-globe"></i> Новое исследование
+      </button>
     </div>
   </div>
 
   <script>
     (function() {
+      // ⚠️ МЕСТА ДЛЯ URL КАРТИНОК ПЛАНЕТ (замените пустые строки на ссылки)
       const spaceData = [
-        { id: 'sun', name: 'Солнце', type: 'Звезда', desc: 'Центр нашей системы. Температура ядра — 15 миллионов градусов.', imgUrl: '', planetClass: 'planet-sun' },
-        { id: 'mercury', name: 'Меркурий', type: 'Планета', desc: 'Ближайшая к Солнцу планета. Перепады температур: от +430°C до -180°C.', imgUrl: '', planetClass: 'planet-mercury' },
-        { id: 'venus', name: 'Венера', type: 'Планета', desc: 'Самая горячая планета. Атмосфера создаёт парниковый эффект.', imgUrl: '', planetClass: 'planet-venus' },
-        { id: 'earth', name: 'Земля', type: 'Планета', desc: 'Наш дом. Единственная известная планета с жизнью.', imgUrl: '', planetClass: 'planet-earth' },
-        { id: 'mars', name: 'Марс', type: 'Планета', desc: 'Красная планета. Здесь находится Олимп — высочайший вулкан.', imgUrl: '', planetClass: 'planet-mars' },
-        { id: 'jupiter', name: 'Юпитер', type: 'Газовый гигант', desc: 'Крупнейшая планета. Большое Красное Пятно — гигантский шторм.', imgUrl: '', planetClass: 'planet-jupiter' },
-        { id: 'saturn', name: 'Сатурн', type: 'Газовый гигант', desc: 'Великолепная система колец из льда и пыли.', imgUrl: '', planetClass: 'planet-saturn' },
-        { id: 'uranus', name: 'Уран', type: 'Ледяной гигант', desc: 'Вращается «лёжа на боку».', imgUrl: '', planetClass: 'planet-uranus' },
-        { id: 'neptune', name: 'Нептун', type: 'Ледяной гигант', desc: 'Самая ветреная планета. Скорость ветра до 2100 км/ч.', imgUrl: '', planetClass: 'planet-neptune' },
-        { id: 'moon', name: 'Луна', type: 'Спутник', desc: 'Единственный спутник Земли.', imgUrl: '', planetClass: 'planet-moon' },
-        { id: 'galaxy', name: 'Млечный Путь', type: 'Галактика', desc: 'Наша галактика. Содержит до 400 миллиардов звёзд.', imgUrl: '', planetClass: 'planet-galaxy' },
-        { id: 'nebula', name: 'Туманность Ориона', type: 'Туманность', desc: 'Активные «звёздные ясли».', imgUrl: '', planetClass: 'planet-nebula' }
+        { id: 'sun', name: 'Солнце', type: 'Звезда', desc: 'Центр нашей системы. Температура ядра — 15 миллионов градусов. Каждую секунду превращает 600 млн тонн водорода в гелий.', imgUrl: '', planetClass: 'planet-sun' },
+        { id: 'mercury', name: 'Меркурий', type: 'Планета', desc: 'Ближайшая к Солнцу планета. Перепады температур: от +430°C днём до -180°C ночью.', imgUrl: '', planetClass: 'planet-mercury' },
+        { id: 'venus', name: 'Венера', type: 'Планета', desc: 'Самая горячая планета. Атмосфера из углекислого газа создаёт сильнейший парниковый эффект.', imgUrl: '', planetClass: 'planet-venus' },
+        { id: 'earth', name: 'Земля', type: 'Планета', desc: 'Наш дом. 71% поверхности покрыто водой. Единственная известная планета, на которой есть жизнь.', imgUrl: '', planetClass: 'planet-earth' },
+        { id: 'mars', name: 'Марс', type: 'Планета', desc: 'Красная планета. Здесь находится Олимп — высочайший вулкан в Солнечной системе (выше Эвереста в 2.5 раза).', imgUrl: '', planetClass: 'planet-mars' },
+        { id: 'jupiter', name: 'Юпитер', type: 'Газовый гигант', desc: 'Крупнейшая планета. Большое Красное Пятно — гигантский шторм, который бушует уже более 350 лет.', imgUrl: '', planetClass: 'planet-jupiter' },
+        { id: 'saturn', name: 'Сатурн', type: 'Газовый гигант', desc: 'Великолепная система колец из миллиардов частичек льда и пыли. Плотность меньше плотности воды.', imgUrl: '', planetClass: 'planet-saturn' },
+        { id: 'uranus', name: 'Уран', type: 'Ледяной гигант', desc: 'Вращается «лёжа на боку» — ось наклонена почти на 98 градусов из-за древнего столкновения.', imgUrl: '', planetClass: 'planet-uranus' },
+        { id: 'neptune', name: 'Нептун', type: 'Ледяной гигант', desc: 'Самая ветреная планета. Скорость ветра здесь достигает 2100 км/ч.', imgUrl: '', planetClass: 'planet-neptune' },
+        { id: 'moon', name: 'Луна', type: 'Спутник', desc: 'Единственный спутник Земли. Всегда повёрнута к нам одной стороной из-за приливного захвата.', imgUrl: '', planetClass: 'planet-moon' },
+        { id: 'galaxy', name: 'Млечный Путь', type: 'Галактика', desc: 'Наша галактика. Содержит от 100 до 400 миллиардов звёзд. В центре — сверхмассивная чёрная дыра.', imgUrl: '', planetClass: 'planet-galaxy' },
+        { id: 'nebula', name: 'Туманность Ориона', type: 'Туманность', desc: 'Активные «звёздные ясли». Прямо сейчас здесь из газа и пыли рождаются сотни новых звёзд.', imgUrl: '', planetClass: 'planet-nebula' }
       ];
 
+      // ⚠️⚠️⚠️ ДАННЫЕ КНИГ ДЛЯ БИБЛИОТЕКИ ⚠️⚠️⚠️
       const libraryBooks = {
-        '5-7': [{ title: 'Астрономия для детей', author: 'Е. П. Левитан', coverUrl: '', linkUrl: '' }, { title: 'Сказочная Вселенная', author: 'Е. П. Левитан', coverUrl: '', linkUrl: '' }, { title: 'Звёзды и планеты', author: 'Л. В. Тарасов', coverUrl: '', linkUrl: '' }, { title: 'Космос. Полная энциклопедия', author: 'В. И. Цветков', coverUrl: '', linkUrl: '' }],
-        '8-9': [{ title: 'Астрономия. Базовый уровень', author: 'Б. А. Воронцов-Вельяминов', coverUrl: '', linkUrl: '' }, { title: 'Занимательная астрономия', author: 'Я. И. Перельман', coverUrl: '', linkUrl: '' }, { title: 'Вселенная в вопросах и ответах', author: 'С. Л. Абрамов', coverUrl: '', linkUrl: '' }, { title: 'Астрономия: век XXI', author: 'Под ред. В. Г. Сурдина', coverUrl: '', linkUrl: '' }],
-        '10-11': [{ title: 'Астрономия. Углублённый уровень', author: 'В. М. Чаругин', coverUrl: '', linkUrl: '' }, { title: 'Общая астрономия', author: 'Э. В. Кононович', coverUrl: '', linkUrl: '' }, { title: 'Небо и телескоп', author: 'К. В. Куимов', coverUrl: '', linkUrl: '' }, { title: 'Солнечная система', author: 'В. Г. Сурдин', coverUrl: '', linkUrl: '' }],
-        'course': [{ title: 'Астрофизика с космической скоростью', author: 'Нил Деграсс Тайсон', coverUrl: '', linkUrl: '' }, { title: 'Краткая история времени', author: 'Стивен Хокинг', coverUrl: '', linkUrl: '' }, { title: 'Гайд по астрономии', author: 'А. М. Черепащук', coverUrl: '', linkUrl: '' }, { title: 'Космология', author: 'С. Вайнберг', coverUrl: '', linkUrl: '' }]
+        '5-7': [
+          { title: 'Астрономия для детей', author: 'Е. П. Левитан', coverUrl: '', linkUrl: '' },
+          { title: 'Сказочная Вселенная', author: 'Е. П. Левитан', coverUrl: '', linkUrl: '' },
+          { title: 'Звёзды и планеты. Детская энциклопедия', author: 'Л. В. Тарасов', coverUrl: '', linkUrl: '' },
+          { title: 'Космос. Полная энциклопедия', author: 'В. И. Цветков', coverUrl: '', linkUrl: '' }
+        ],
+        '8-9': [
+          { title: 'Астрономия. 10-11 классы. Базовый уровень', author: 'Б. А. Воронцов-Вельяминов, Е. К. Страут', coverUrl: '', linkUrl: '' },
+          { title: 'Занимательная астрономия', author: 'Я. И. Перельман', coverUrl: '', linkUrl: '' },
+          { title: 'Вселенная в вопросах и ответах', author: 'С. Л. Абрамов', coverUrl: '', linkUrl: '' },
+          { title: 'Астрономия: век XXI', author: 'Под ред. В. Г. Сурдина', coverUrl: '', linkUrl: '' }
+        ],
+        '10-11': [
+          { title: 'Астрономия. 10-11 классы. Углублённый уровень', author: 'В. М. Чаругин', coverUrl: '', linkUrl: '' },
+          { title: 'Общая астрономия', author: 'Э. В. Кононович, В. И. Мороз', coverUrl: '', linkUrl: '' },
+          { title: 'Небо и телескоп', author: 'К. В. Куимов', coverUrl: '', linkUrl: '' },
+          { title: 'Солнечная система', author: 'В. Г. Сурдин', coverUrl: '', linkUrl: '' }
+        ],
+        'course': [
+          { title: 'Астрофизика с космической скоростью', author: 'Нил Деграсс Тайсон', coverUrl: '', linkUrl: '' },
+          { title: 'Краткая история времени', author: 'Стивен Хокинг', coverUrl: '', linkUrl: '' },
+          { title: 'Гайд по астрономии. Путеводитель', author: 'А. М. Черепащук', coverUrl: '', linkUrl: '' },
+          { title: 'Космология', author: 'С. Вайнберг', coverUrl: '', linkUrl: '' },
+          { title: 'Вселенная. Емкие ответы на вопросы', author: 'А. Виленкин', coverUrl: '', linkUrl: '' },
+          { title: 'Астрономия: учебник для вузов', author: 'А. В. Засов, Э. В. Кононович', coverUrl: '', linkUrl: '' }
+        ]
       };
 
+      // ⚠️⚠️⚠️ ДАННЫЕ ДЛЯ ИГРЫ «ПЛАНЕТЫ И СПУТНИКИ» ⚠️⚠️⚠️
       const planetMoonPairs = [
         { planet: 'Земля', planetIcon: '🌍', planetClass: 'planet-earth', moon: 'Луна', moonIcon: '🌙', moonClass: 'planet-moon' },
         { planet: 'Марс', planetIcon: '🔴', planetClass: 'planet-mars', moon: 'Фобос и Деймос', moonIcon: '🪨', moonClass: 'planet-mercury' },
@@ -1792,48 +1721,10 @@
         { planet: 'Плутон', planetIcon: '🤎', planetClass: 'planet-mercury', moon: 'Харон', moonIcon: '🪨', moonClass: 'planet-moon' }
       ];
 
-      let currentGame = 'memory';
-      let state = { cards: [], flipped: [], matched: 0, moves: 0, timer: 0, interval: null, hintsLeft: 2, locked: false, gameStarted: false };
-      let matchState = { planets: [], moons: [], selectedPlanet: null, selectedMoon: null, matchedPairs: [], attempts: 0, timer: 0, interval: null, gameStarted: false, locked: false };
+      // --- ТЕКУЩАЯ ИГРА ---
+      let currentGame = 'memory'; // 'memory' или 'match'
 
-      const TOTAL_PAIRS = spaceData.length;
-      const PERFECT_MOVES = TOTAL_PAIRS;
-      const MAX_SCORE = 10000;
-
-      function calculateScore(moves, timeSeconds) {
-        const idealMoves = PERFECT_MOVES;
-        const idealTime = 30;
-        let score = MAX_SCORE - Math.max(0, moves - idealMoves) * 120 - Math.max(0, timeSeconds - idealTime) * 8;
-        if (timeSeconds < idealTime) score += (idealTime - timeSeconds) * 15;
-        if (moves <= idealMoves) score += (idealMoves - moves + 1) * 200;
-        return Math.max(100, Math.min(MAX_SCORE + 2000, Math.round(score)));
-      }
-
-      function calculateAccuracy(moves) { return moves === 0 ? 100 : Math.min(100, Math.round((TOTAL_PAIRS / moves) * 100)); }
-      function getStars(score) {
-        if (score >= 9000) return '★★★★★';
-        if (score >= 7000) return '★★★★☆';
-        if (score >= 5000) return '★★★☆☆';
-        if (score >= 3000) return '★★☆☆☆';
-        return '★☆☆☆☆';
-      }
-      function getRank(score) {
-        if (score >= 9500) return 'Гранд-мастер Галактики';
-        if (score >= 8000) return 'Капитан Звёздного Флота';
-        if (score >= 6500) return 'Офицер-исследователь';
-        if (score >= 5000) return 'Космический навигатор';
-        if (score >= 3500) return 'Пилот-стажёр';
-        if (score >= 2000) return 'Кадет Академии';
-        return 'Космический турист';
-      }
-      function getRankColor(score) {
-        if (score >= 8000) return 'linear-gradient(135deg, #fbbf24, #f59e0b)';
-        if (score >= 6000) return 'linear-gradient(135deg, #c084fc, #a855f7)';
-        if (score >= 4000) return 'linear-gradient(135deg, #22d3ee, #06b6d4)';
-        if (score >= 2000) return 'linear-gradient(135deg, #94a3b8, #64748b)';
-        return 'linear-gradient(135deg, #ef4444, #dc2626)';
-      }
-
+      // --- ФУНКЦИЯ ПОСТРОЕНИЯ БИБЛИОТЕКИ ---
       function renderLibrary() {
         for (const [category, books] of Object.entries(libraryBooks)) {
           const container = document.getElementById(`books-${category}`);
@@ -1844,8 +1735,11 @@
             card.className = 'book-card';
             const cover = document.createElement('div');
             cover.className = 'book-cover';
-            if (book.coverUrl && book.coverUrl.trim() !== '') cover.style.backgroundImage = `url('${book.coverUrl}')`;
-            else cover.innerHTML = '<i class="fas fa-book"></i>';
+            if (book.coverUrl && book.coverUrl.trim() !== '') {
+              cover.style.backgroundImage = `url('${book.coverUrl}')`;
+            } else {
+              cover.innerHTML = '<i class="fas fa-book"></i>';
+            }
             const info = document.createElement('div');
             info.className = 'book-info';
             info.innerHTML = `<div class="book-name">${book.title}</div><div class="book-author">${book.author}</div>`;
@@ -1853,14 +1747,184 @@
             link.className = 'book-link';
             link.href = book.linkUrl && book.linkUrl.trim() !== '' ? book.linkUrl : '#';
             link.target = '_blank';
+            link.rel = 'noopener noreferrer';
             link.innerHTML = '<i class="fas fa-external-link-alt"></i> Читать';
-            if (!book.linkUrl || book.linkUrl.trim() === '') { link.style.opacity = '0.4'; link.style.pointerEvents = 'none'; }
-            card.appendChild(cover); card.appendChild(info); card.appendChild(link);
+            if (!book.linkUrl || book.linkUrl.trim() === '') {
+              link.style.opacity = '0.4';
+              link.style.pointerEvents = 'none';
+              link.title = 'Ссылка будет добавлена позже';
+            }
+            card.appendChild(cover);
+            card.appendChild(info);
+            card.appendChild(link);
             container.appendChild(card);
           });
         }
       }
 
+      // --- СИСТЕМА ОЦЕНКИ MEMORY ---
+      const TOTAL_PAIRS = spaceData.length;
+      const PERFECT_MOVES = TOTAL_PAIRS;
+      const MAX_SCORE = 10000;
+
+      function calculateScore(moves, timeSeconds) {
+        const idealMoves = PERFECT_MOVES;
+        const idealTime = 30;
+        const extraMoves = Math.max(0, moves - idealMoves);
+        const movePenalty = extraMoves * 120;
+        const extraTime = Math.max(0, timeSeconds - idealTime);
+        const timePenalty = extraTime * 8;
+        let score = MAX_SCORE - movePenalty - timePenalty;
+        if (timeSeconds < idealTime) {
+          const timeBonus = (idealTime - timeSeconds) * 15;
+          score += timeBonus;
+        }
+        if (moves <= idealMoves) {
+          const accuracyBonus = (idealMoves - moves + 1) * 200;
+          score += accuracyBonus;
+        }
+        score = Math.max(100, Math.min(MAX_SCORE + 2000, Math.round(score)));
+        return score;
+      }
+
+      function calculateAccuracy(moves) {
+        if (moves === 0) return 100;
+        const accuracy = Math.round((TOTAL_PAIRS / moves) * 100);
+        return Math.min(100, accuracy);
+      }
+
+      function getStars(score) {
+        if (score >= 9000) return '★★★★★';
+        if (score >= 7000) return '★★★★☆';
+        if (score >= 5000) return '★★★☆☆';
+        if (score >= 3000) return '★★☆☆☆';
+        return '★☆☆☆☆';
+      }
+
+      function getRank(score) {
+        if (score >= 9500) return 'Гранд-мастер Галактики';
+        if (score >= 8000) return 'Капитан Звёздного Флота';
+        if (score >= 6500) return 'Офицер-исследователь';
+        if (score >= 5000) return 'Космический навигатор';
+        if (score >= 3500) return 'Пилот-стажёр';
+        if (score >= 2000) return 'Кадет Академии';
+        return 'Космический турист';
+      }
+
+      function getRankColor(score) {
+        if (score >= 8000) return 'linear-gradient(135deg, #fbbf24, #f59e0b)';
+        if (score >= 6000) return 'linear-gradient(135deg, #c084fc, #a855f7)';
+        if (score >= 4000) return 'linear-gradient(135deg, #22d3ee, #06b6d4)';
+        if (score >= 2000) return 'linear-gradient(135deg, #94a3b8, #64748b)';
+        return 'linear-gradient(135deg, #ef4444, #dc2626)';
+      }
+
+      function updateEfficiency() {
+        if (currentGame === 'memory') {
+          if (state.moves === 0) {
+            document.getElementById('efficiency-percent').textContent = '100%';
+            document.getElementById('efficiency-fill').style.width = '100%';
+            return;
+          }
+          const accuracy = calculateAccuracy(state.moves);
+          document.getElementById('efficiency-percent').textContent = accuracy + '%';
+          document.getElementById('efficiency-fill').style.width = accuracy + '%';
+          const fill = document.getElementById('efficiency-fill');
+          if (accuracy >= 80) {
+            fill.style.background = 'linear-gradient(90deg, #22d3ee, #c084fc)';
+          } else if (accuracy >= 50) {
+            fill.style.background = 'linear-gradient(90deg, #fbbf24, #f59e0b)';
+          } else {
+            fill.style.background = 'linear-gradient(90deg, #f87171, #ef4444)';
+          }
+        } else {
+          // Для игры «спутники»
+          const total = planetMoonPairs.length;
+          const matched = matchState.matchedPairs.length;
+          if (matchState.attempts === 0) {
+            document.getElementById('efficiency-percent').textContent = '100%';
+            document.getElementById('efficiency-fill').style.width = '100%';
+          } else {
+            const acc = Math.round((matched / Math.max(1, matchState.attempts)) * 100);
+            document.getElementById('efficiency-percent').textContent = Math.min(100, acc) + '%';
+            document.getElementById('efficiency-fill').style.width = Math.min(100, acc) + '%';
+          }
+        }
+      }
+
+      // --- СОСТОЯНИЕ ИГРЫ MEMORY ---
+      let state = { cards: [], flipped: [], matched: 0, moves: 0, timer: 0, interval: null, hintsLeft: 2, locked: false, gameStarted: false };
+
+      // --- СОСТОЯНИЕ ИГРЫ «СПУТНИКИ» ---
+      let matchState = {
+        planets: [],
+        moons: [],
+        selectedPlanet: null,
+        selectedMoon: null,
+        matchedPairs: [],
+        attempts: 0,
+        timer: 0,
+        interval: null,
+        gameStarted: false,
+        locked: false
+      };
+
+      // ============ КОТ-АСТРОНАВТ (ПОМОЩНИК) ============
+      const assistantBubble = document.getElementById('assistant-bubble');
+      let assistantTimeout;
+
+      function sayMessage(msg, duration = 4000) {
+        if (!assistantBubble) return;
+        assistantBubble.textContent = msg;
+        assistantBubble.style.opacity = '1';
+        clearTimeout(assistantTimeout);
+        assistantTimeout = setTimeout(() => {
+          assistantBubble.style.opacity = '0';
+          setTimeout(() => {
+            if (assistantBubble && !assistantBubble.textContent.includes('Мяу')) {
+              assistantBubble.textContent = '🐱 Мяу! Я на связи';
+            }
+            assistantBubble.style.opacity = '1';
+          }, 500);
+        }, duration);
+      }
+
+      function assistantReact(eventType, data = {}) {
+        if (!assistantBubble) return;
+        switch (eventType) {
+          case 'gameStartMemory':
+            sayMessage('🐱 Мяу! Переворачивай карты и находи пары! Я помогу если что');
+            break;
+          case 'gameStartMatch':
+            sayMessage('🪐 Соедини планету с её спутником! Когти вперёд!');
+            break;
+          case 'matchCorrect':
+            sayMessage('✅ Мур-правильно! Так держать, космический кот одобряет');
+            break;
+          case 'matchWrong':
+            sayMessage('❌ Мяу... Неправильно. Попробуй ещё раз, я верю в тебя!');
+            break;
+          case 'memoryMatch':
+            sayMessage(`✨ Мурр! ${data.name || 'Объект'} добавлен в твою коллекцию! 🎉`);
+            break;
+          case 'victoryMemory':
+            sayMessage('🏆 МЯУ-У-У! Ты покорил космос! Барсик гордится тобой!');
+            break;
+          case 'victoryMatch':
+            sayMessage('🌠 Идеальное соединение! Ты настоящий астроном! Мур-мур-поздравляю!');
+            break;
+          case 'hintUsed':
+            sayMessage('💡 Я подсветил возможные пары. Смотри внимательно, котёнок!');
+            break;
+          case 'restart':
+            sayMessage('🔄 Перезапуск... Новая космическая экспедиция начинается! Мяу!');
+            break;
+          default:
+            sayMessage('🚀 Мяу! Звёзды на твоей стороне, космонавт!');
+        }
+      }
+
+      // Парящая пыль
       function spawnDust() {
         const container = document.getElementById('floating-dust');
         if (!container) return;
@@ -1879,59 +1943,20 @@
         }
       }
 
-      function fmtTime(s) { const m = Math.floor(s / 60), sec = s % 60; return `${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`; }
-
-      const assistantBubble = document.getElementById('assistant-bubble');
-      let assistantTimeout;
-      function sayMessage(msg, duration = 4000) {
-        if (!assistantBubble) return;
-        assistantBubble.textContent = msg;
-        assistantBubble.style.opacity = '1';
-        clearTimeout(assistantTimeout);
-        assistantTimeout = setTimeout(() => {
-          assistantBubble.style.opacity = '0';
-          setTimeout(() => {
-            if (assistantBubble && !assistantBubble.textContent.includes('Барсик')) assistantBubble.textContent = '🐱🚀 Барсик на связи!';
-            assistantBubble.style.opacity = '1';
-          }, 500);
-        }, duration);
+      function fmtTime(s) {
+        const m = Math.floor(s / 60), sec = s % 60;
+        return `${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
       }
 
-      function assistantReact(eventType, data = {}) {
-        if (!assistantBubble) return;
-        const messages = {
-          gameStartMemory: '🐱 Мяу! Переворачивай карты и находи пары!',
-          gameStartMatch: '🪐 Соедини планету с её спутником!',
-          matchCorrect: '✅ Мур-правильно! Так держать!',
-          matchWrong: '❌ Мяу... Неправильно. Попробуй ещё раз!',
-          memoryMatch: `✨ Мурр! ${data.name || 'Объект'} добавлен в коллекцию!`,
-          victoryMemory: '🏆 МЯУ-У-У! Ты покорил космос!',
-          victoryMatch: '🌠 Идеальное соединение! Поздравляю!',
-          hintUsed: '💡 Я подсветил возможные пары!',
-          restart: '🔄 Новая космическая экспедиция!'
-        };
-        sayMessage(messages[eventType] || '🚀 Звёзды на твоей стороне!');
-      }
-
-      function updateEfficiency() {
-        if (currentGame === 'memory') {
-          if (state.moves === 0) { document.getElementById('efficiency-percent').textContent = '100%'; document.getElementById('efficiency-fill').style.width = '100%'; return; }
-          const accuracy = calculateAccuracy(state.moves);
-          document.getElementById('efficiency-percent').textContent = accuracy + '%';
-          document.getElementById('efficiency-fill').style.width = accuracy + '%';
-        } else {
-          const matched = matchState.matchedPairs.length;
-          if (matchState.attempts === 0) { document.getElementById('efficiency-percent').textContent = '100%'; document.getElementById('efficiency-fill').style.width = '100%'; }
-          else { const acc = Math.round((matched / matchState.attempts) * 100); document.getElementById('efficiency-percent').textContent = Math.min(100, acc) + '%'; document.getElementById('efficiency-fill').style.width = Math.min(100, acc) + '%'; }
-        }
-      }
-
+      // ============ ПЕРЕКЛЮЧЕНИЕ ИГР ============
       function switchGame(game) {
         currentGame = game;
         document.getElementById('switch-memory').classList.toggle('active', game === 'memory');
         document.getElementById('switch-match').classList.toggle('active', game === 'match');
+
         const memoryGrid = document.getElementById('grid');
         const matchContainer = document.getElementById('match-game');
+
         if (game === 'memory') {
           memoryGrid.style.display = 'grid';
           matchContainer.classList.remove('active');
@@ -1953,37 +1978,22 @@
         updateEfficiency();
       }
 
+      document.getElementById('switch-memory').addEventListener('click', () => {
+        if (currentGame !== 'memory') switchGame('memory');
+      });
+      document.getElementById('switch-match').addEventListener('click', () => {
+        if (currentGame !== 'match') switchGame('match');
+      });
+
+      // ============ ИГРА MEMORY ============
       function startClock() {
         if (state.interval) clearInterval(state.interval);
-        state.interval = setInterval(() => { state.timer++; if (currentGame === 'memory') document.getElementById('timer').textContent = fmtTime(state.timer); }, 1000);
-      }
-
-      function startMatchClock() {
-        if (matchState.interval) clearInterval(matchState.interval);
-        matchState.interval = setInterval(() => { matchState.timer++; if (currentGame === 'match') document.getElementById('timer').textContent = fmtTime(matchState.timer); }, 1000);
-      }
-
-      function buildMemoryBoard() {
-        const grid = document.getElementById('grid');
-        grid.innerHTML = '';
-        const deck = [...spaceData, ...spaceData].sort(() => Math.random() - 0.5);
-        deck.forEach(item => {
-          const wrap = document.createElement('div');
-          wrap.className = 'card-wrapper';
-          const glow = document.createElement('div');
-          glow.className = 'card-glow';
-          const inner = document.createElement('div');
-          inner.className = 'card-inner';
-          inner.dataset.id = item.id;
-          let frontBg = '';
-          if (item.imgUrl && item.imgUrl.trim() !== '') frontBg = `background-image:url('${item.imgUrl}');background-size:cover;`;
-          inner.innerHTML = `<div class="card-face card-front ${(!item.imgUrl||item.imgUrl.trim()==='')?item.planetClass:''}" style="${frontBg}"></div><div class="card-face card-back"></div>`;
-          wrap.appendChild(glow);
-          wrap.appendChild(inner);
-          wrap.addEventListener('click', () => flipCard(inner));
-          grid.appendChild(wrap);
-          state.cards.push(inner);
-        });
+        state.interval = setInterval(() => {
+          state.timer++;
+          if (currentGame === 'memory') {
+            document.getElementById('timer').textContent = fmtTime(state.timer);
+          }
+        }, 1000);
       }
 
       function flipCard(el) {
@@ -2009,7 +2019,10 @@
           state.flipped = []; state.locked = false;
           if (state.matched === spaceData.length) victory();
         } else {
-          setTimeout(() => { a.classList.remove('flipped'); b.classList.remove('flipped'); state.flipped = []; state.locked = false; }, 850);
+          setTimeout(() => {
+            a.classList.remove('flipped'); b.classList.remove('flipped');
+            state.flipped = []; state.locked = false;
+          }, 850);
         }
       }
 
@@ -2027,66 +2040,133 @@
         assistantReact('memoryMatch', { name: data.name });
       }
 
-      function showInfo(id) { const d = spaceData.find(x => x.id === id); document.getElementById('info-title').textContent = d.name; document.getElementById('info-desc').textContent = d.desc; document.getElementById('info-modal').classList.add('active'); }
+      function showInfo(id) {
+        const d = spaceData.find(x => x.id === id);
+        document.getElementById('info-title').textContent = d.name;
+        document.getElementById('info-desc').textContent = d.desc;
+        document.getElementById('info-modal').classList.add('active');
+      }
+
       window.closeInfo = () => document.getElementById('info-modal').classList.remove('active');
 
-      function shuffleArray(arr) { for (let i = arr.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [arr[i], arr[j]] = [arr[j], arr[i]]; } return arr; }
+      function buildMemoryBoard() {
+        const grid = document.getElementById('grid');
+        grid.innerHTML = '';
+        const deck = [...spaceData, ...spaceData].sort(() => Math.random() - 0.5);
+        deck.forEach(item => {
+          const wrap = document.createElement('div');
+          wrap.className = 'card-wrapper';
+          const glow = document.createElement('div');
+          glow.className = 'card-glow';
+          const inner = document.createElement('div');
+          inner.className = 'card-inner';
+          inner.dataset.id = item.id;
+          let frontBg = '';
+          if (item.imgUrl && item.imgUrl.trim() !== '') frontBg = `background-image:url('${item.imgUrl}');background-size:cover;`;
+          inner.innerHTML = `
+            <div class="card-face card-front ${(!item.imgUrl||item.imgUrl.trim()==='')?item.planetClass:''}" style="${frontBg}"></div>
+            <div class="card-face card-back"></div>
+          `;
+          wrap.appendChild(glow);
+          wrap.appendChild(inner);
+          wrap.addEventListener('click', () => flipCard(inner));
+          grid.appendChild(wrap);
+          state.cards.push(inner);
+        });
+      }
+
+      // ============ ИГРА «СОЕДИНИ ПЛАНЕТЫ СО СПУТНИКАМИ» ============
+      function shuffleArray(arr) {
+        for (let i = arr.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+      }
 
       function buildMatchGame() {
         const planetsCol = document.getElementById('planets-column');
         const moonsCol = document.getElementById('moons-column');
+
         planetsCol.querySelectorAll('.match-item').forEach(el => el.remove());
         moonsCol.querySelectorAll('.match-item').forEach(el => el.remove());
+
         const shuffledPlanets = shuffleArray([...planetMoonPairs]);
         const shuffledMoons = shuffleArray([...planetMoonPairs]);
-        matchState.planets = []; matchState.moons = [];
+
+        matchState.planets = [];
+        matchState.moons = [];
+
         shuffledPlanets.forEach((pair, index) => {
           const item = document.createElement('div');
           item.className = 'match-item planet-item';
           item.dataset.pairIndex = planetMoonPairs.indexOf(pair);
+          item.dataset.type = 'planet';
           item.innerHTML = `<div class="match-icon ${pair.planetClass}"></div><span>${pair.planetIcon} ${pair.planet}</span>`;
           item.addEventListener('click', () => onPlanetClick(item, pair));
           planetsCol.appendChild(item);
           matchState.planets.push(item);
         });
+
         shuffledMoons.forEach((pair, index) => {
           const item = document.createElement('div');
           item.className = 'match-item moon-item';
           item.dataset.pairIndex = planetMoonPairs.indexOf(pair);
+          item.dataset.type = 'moon';
           item.innerHTML = `<div class="match-icon ${pair.moonClass}"></div><span>${pair.moonIcon} ${pair.moon}</span>`;
           item.addEventListener('click', () => onMoonClick(item, pair));
           moonsCol.appendChild(item);
           matchState.moons.push(item);
         });
+
         document.getElementById('match-score-display').textContent = '';
       }
 
+      function startMatchClock() {
+        if (matchState.interval) clearInterval(matchState.interval);
+        matchState.interval = setInterval(() => {
+          matchState.timer++;
+          if (currentGame === 'match') {
+            document.getElementById('timer').textContent = fmtTime(matchState.timer);
+          }
+        }, 1000);
+      }
+
       function onPlanetClick(el, pair) {
-        if (matchState.locked || el.classList.contains('matched-correct')) return;
+        if (matchState.locked) return;
+        if (el.classList.contains('matched-correct')) return;
         if (!matchState.gameStarted) { matchState.gameStarted = true; startMatchClock(); assistantReact('gameStartMatch'); }
+
         matchState.planets.forEach(p => p.classList.remove('selected'));
         el.classList.add('selected');
         matchState.selectedPlanet = { el, pair };
+
         checkMatchPair();
       }
 
       function onMoonClick(el, pair) {
-        if (matchState.locked || el.classList.contains('matched-correct')) return;
+        if (matchState.locked) return;
+        if (el.classList.contains('matched-correct')) return;
         if (!matchState.gameStarted) { matchState.gameStarted = true; startMatchClock(); assistantReact('gameStartMatch'); }
+
         matchState.moons.forEach(m => m.classList.remove('selected'));
         el.classList.add('selected');
         matchState.selectedMoon = { el, pair };
+
         checkMatchPair();
       }
 
       function checkMatchPair() {
         if (!matchState.selectedPlanet || !matchState.selectedMoon) return;
+
         matchState.locked = true;
         matchState.attempts++;
         document.getElementById('moves').textContent = matchState.attempts;
         updateEfficiency();
+
         const planetPair = matchState.selectedPlanet.pair;
         const moonPair = matchState.selectedMoon.pair;
+
         if (planetPair.planet === moonPair.planet) {
           setTimeout(() => {
             matchState.selectedPlanet.el.classList.add('matched-correct');
@@ -2094,19 +2174,29 @@
             matchState.selectedPlanet.el.classList.remove('selected');
             matchState.selectedMoon.el.classList.remove('selected');
             matchState.matchedPairs.push(planetPair.planet);
-            drawConnections();
+
+            drawConnections(true);
+
             matchState.selectedPlanet = null;
             matchState.selectedMoon = null;
             matchState.locked = false;
-            document.getElementById('match-score-display').textContent = `✅ ${matchState.matchedPairs.length} / ${planetMoonPairs.length} пар найдено`;
+
+            document.getElementById('match-score-display').textContent =
+              `✅ ${matchState.matchedPairs.length} / ${planetMoonPairs.length} пар найдено`;
+
             assistantReact('matchCorrect');
-            if (matchState.matchedPairs.length === planetMoonPairs.length) matchVictory();
+
+            if (matchState.matchedPairs.length === planetMoonPairs.length) {
+              matchVictory();
+            }
           }, 400);
         } else {
           const planetEl = matchState.selectedPlanet.el;
           const moonEl = matchState.selectedMoon.el;
+
           planetEl.classList.add('wrong-flash');
           moonEl.classList.add('wrong-flash');
+
           setTimeout(() => {
             planetEl.classList.remove('selected', 'wrong-flash');
             moonEl.classList.remove('selected', 'wrong-flash');
@@ -2115,54 +2205,54 @@
             matchState.locked = false;
             drawConnections();
           }, 600);
+          
           assistantReact('matchWrong');
         }
       }
 
-      function drawConnections() {
+      // Canvas для линий
+      function drawConnections(animate = false) {
         const canvas = document.getElementById('connections-canvas');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+
         if (currentGame !== 'match') return;
+
         matchState.matchedPairs.forEach(pairName => {
           const pairData = planetMoonPairs.find(p => p.planet === pairName);
           if (!pairData) return;
+
           const planetEl = matchState.planets.find(p => p.dataset.pairIndex == planetMoonPairs.indexOf(pairData));
           const moonEl = matchState.moons.find(m => m.dataset.pairIndex == planetMoonPairs.indexOf(pairData));
+
           if (planetEl && moonEl) {
             const pRect = planetEl.getBoundingClientRect();
             const mRect = moonEl.getBoundingClientRect();
-            const startX = pRect.right, startY = pRect.top + pRect.height / 2;
-            const endX = mRect.left, endY = mRect.top + mRect.height / 2;
-            ctx.beginPath(); ctx.moveTo(startX, startY); ctx.lineTo(endX, endY);
-            ctx.strokeStyle = 'rgba(34, 197, 94, 0.5)'; ctx.lineWidth = 3; ctx.setLineDash([8, 4]); ctx.stroke();
-            ctx.beginPath(); ctx.moveTo(startX, startY); ctx.lineTo(endX, endY);
-            ctx.strokeStyle = 'rgba(34, 197, 94, 0.15)'; ctx.lineWidth = 12; ctx.stroke();
+
+            const startX = pRect.right;
+            const startY = pRect.top + pRect.height / 2;
+            const endX = mRect.left;
+            const endY = mRect.top + mRect.height / 2;
+
+            ctx.beginPath();
+            ctx.moveTo(startX, startY);
+            ctx.lineTo(endX, endY);
+            ctx.strokeStyle = 'rgba(34, 197, 94, 0.5)';
+            ctx.lineWidth = 3;
+            ctx.setLineDash([8, 4]);
+            ctx.stroke();
             ctx.setLineDash([]);
+
+            ctx.beginPath();
+            ctx.moveTo(startX, startY);
+            ctx.lineTo(endX, endY);
+            ctx.strokeStyle = 'rgba(34, 197, 94, 0.15)';
+            ctx.lineWidth = 12;
+            ctx.stroke();
           }
         });
-      }
-
-      function victory() {
-        clearInterval(state.interval);
-        const score = calculateScore(state.moves, state.timer);
-        const accuracy = calculateAccuracy(state.moves);
-        const stars = getStars(score);
-        const rank = getRank(score);
-        document.getElementById('final-moves').textContent = state.moves;
-        document.getElementById('final-time').textContent = fmtTime(state.timer);
-        document.getElementById('final-accuracy').textContent = accuracy + '%';
-        document.getElementById('final-score').textContent = score;
-        document.getElementById('win-stars').textContent = stars;
-        const rankEl = document.getElementById('rank-title');
-        rankEl.textContent = rank;
-        rankEl.style.background = getRankColor(score);
-        rankEl.style.webkitBackgroundClip = 'text';
-        rankEl.style.webkitTextFillColor = 'transparent';
-        document.getElementById('win-screen').classList.add('visible');
-        assistantReact('victoryMemory');
       }
 
       function matchVictory() {
@@ -2170,46 +2260,118 @@
         const score = Math.round((planetMoonPairs.length / Math.max(1, matchState.attempts)) * 10000);
         const stars = getStars(score);
         const rank = getRank(score);
+
         document.getElementById('final-moves').textContent = matchState.attempts;
         document.getElementById('final-time').textContent = fmtTime(matchState.timer);
-        document.getElementById('final-accuracy').textContent = Math.round((planetMoonPairs.length / Math.max(1, matchState.attempts)) * 100) + '%';
+        document.getElementById('final-accuracy').textContent =
+          Math.round((planetMoonPairs.length / Math.max(1, matchState.attempts)) * 100) + '%';
         document.getElementById('final-score').textContent = score;
         document.getElementById('win-stars').textContent = stars;
+
         const rankEl = document.getElementById('rank-title');
         rankEl.textContent = rank;
         rankEl.style.background = getRankColor(score);
         rankEl.style.webkitBackgroundClip = 'text';
         rankEl.style.webkitTextFillColor = 'transparent';
+        rankEl.style.backgroundClip = 'text';
+
         document.getElementById('win-screen').classList.add('visible');
         assistantReact('victoryMatch');
       }
 
+      // ============ БИБЛИОТЕКА ============
+      function openLibrary() {
+        document.getElementById('library-modal').classList.add('active');
+        document.body.style.overflow = 'hidden';
+        sayMessage('📚 Мур! В библиотеке много интересных книг о космосе!', 3000);
+      }
+
+      window.closeLibrary = function() {
+        document.getElementById('library-modal').classList.remove('active');
+        document.body.style.overflow = '';
+      };
+
+      document.getElementById('library-btn').addEventListener('click', openLibrary);
+      document.getElementById('library-modal').addEventListener('click', function(e) {
+        if (e.target === this) closeLibrary();
+      });
+
+      // ============ ПОБЕДА (MEMORY) ============
+      function victory() {
+        clearInterval(state.interval);
+        const score = calculateScore(state.moves, state.timer);
+        const accuracy = calculateAccuracy(state.moves);
+        const stars = getStars(score);
+        const rank = getRank(score);
+        const rankColor = getRankColor(score);
+
+        document.getElementById('final-moves').textContent = state.moves;
+        document.getElementById('final-time').textContent = fmtTime(state.timer);
+        document.getElementById('final-accuracy').textContent = accuracy + '%';
+        document.getElementById('final-score').textContent = score;
+        document.getElementById('win-stars').textContent = stars;
+
+        const rankEl = document.getElementById('rank-title');
+        rankEl.textContent = rank;
+        rankEl.style.background = rankColor;
+        rankEl.style.webkitBackgroundClip = 'text';
+        rankEl.style.webkitTextFillColor = 'transparent';
+        rankEl.style.backgroundClip = 'text';
+
+        document.getElementById('win-screen').classList.add('visible');
+        assistantReact('victoryMemory');
+      }
+
+      // ============ ПЕРЕЗАПУСК ============
       function restartGame() {
         clearInterval(state.interval);
-        clearInterval(matchState.interval);
         state = { cards: [], flipped: [], matched: 0, moves: 0, timer: 0, interval: null, hintsLeft: 2, locked: false, gameStarted: false };
-        matchState = { planets: [], moons: [], selectedPlanet: null, selectedMoon: null, matchedPairs: [], attempts: 0, timer: 0, interval: null, gameStarted: false, locked: false };
+
+        clearInterval(matchState.interval);
+        matchState = {
+          planets: [],
+          moons: [],
+          selectedPlanet: null,
+          selectedMoon: null,
+          matchedPairs: [],
+          attempts: 0,
+          timer: 0,
+          interval: null,
+          gameStarted: false,
+          locked: false
+        };
+
         document.getElementById('moves').textContent = '0';
         document.getElementById('timer').textContent = '00:00';
         document.getElementById('hints-count').textContent = '(2)';
         document.getElementById('win-screen').classList.remove('visible');
         document.getElementById('inventory').innerHTML = '';
         document.getElementById('match-score-display').textContent = '';
-        if (currentGame === 'memory') { document.getElementById('moves-label').textContent = 'Ходов'; document.getElementById('hint-btn').style.display = 'flex'; }
-        else { document.getElementById('moves-label').textContent = 'Попыток'; document.getElementById('hint-btn').style.display = 'none'; }
+
+        if (currentGame === 'memory') {
+          document.getElementById('moves-label').textContent = 'Ходов';
+          document.getElementById('hint-btn').style.display = 'flex';
+        } else {
+          document.getElementById('moves-label').textContent = 'Попыток';
+          document.getElementById('hint-btn').style.display = 'none';
+        }
+
         updateEfficiency();
         buildMemoryBoard();
         buildMatchGame();
+
         const canvas = document.getElementById('connections-canvas');
         const ctx = canvas.getContext('2d');
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
         assistantReact('restart');
       }
 
-      document.getElementById('switch-memory').addEventListener('click', () => { if (currentGame !== 'memory') switchGame('memory'); });
-      document.getElementById('switch-match').addEventListener('click', () => { if (currentGame !== 'match') switchGame('match'); });
+      window.restartGame = restartGame;
       document.getElementById('restart-btn').addEventListener('click', restartGame);
       document.getElementById('win-restart-btn').addEventListener('click', restartGame);
+
+      // ============ ПОДСКАЗКА (только для Memory) ============
       document.getElementById('hint-btn').addEventListener('click', () => {
         if (currentGame !== 'memory') return;
         if (state.locked || state.hintsLeft <= 0) return;
@@ -2219,15 +2381,24 @@
         state.locked = true;
         const hidden = state.cards.filter(c => !c.classList.contains('matched') && !c.classList.contains('flipped'));
         hidden.forEach(c => c.classList.add('flipped'));
-        setTimeout(() => { hidden.forEach(c => c.classList.remove('flipped')); state.locked = false; }, 1500);
+        setTimeout(() => {
+          hidden.forEach(c => c.classList.remove('flipped'));
+          state.locked = false;
+        }, 1500);
         assistantReact('hintUsed');
       });
-      document.getElementById('library-btn').addEventListener('click', () => { document.getElementById('library-modal').classList.add('active'); document.body.style.overflow = 'hidden'; sayMessage('📚 Мур! В библиотеке много интересных книг!', 3000); });
-      window.closeLibrary = () => { document.getElementById('library-modal').classList.remove('active'); document.body.style.overflow = ''; };
-      document.getElementById('library-modal').addEventListener('click', function(e) { if (e.target === this) closeLibrary(); });
-      document.getElementById('assistant-avatar').addEventListener('click', () => { sayMessage('🐱🚀 Я Барсик! Используй подсказки и библиотеку! 🌟✨', 5000); });
-      window.addEventListener('resize', () => { if (currentGame === 'match') drawConnections(); });
 
+      // Клик по коту-астронавту
+      document.getElementById('assistant-avatar').addEventListener('click', () => {
+        sayMessage('🐱🚀 Мяу! Я звёздный кот Барсик! Используй подсказки, заглядывай в библиотеку и покоряй космос! 🌟✨', 5000);
+      });
+
+      // ============ ОБРАБОТЧИКИ РЕСАЙЗА ============
+      window.addEventListener('resize', () => {
+        if (currentGame === 'match') drawConnections();
+      });
+
+      // ============ ИНИЦИАЛИЗАЦИЯ ============
       spawnDust();
       renderLibrary();
       buildMemoryBoard();
@@ -2244,12 +2415,16 @@
             document.getElementById('loading-status').textContent = "Доступ разрешён. Добро пожаловать.";
             setTimeout(() => {
               document.getElementById('loading-screen').classList.add('orbit-lock');
-              setTimeout(() => { document.getElementById('loading-screen').style.opacity = '0'; setTimeout(() => { document.getElementById('loading-screen').style.display = 'none'; }, 1200); }, 1800);
+              setTimeout(() => {
+                document.getElementById('loading-screen').style.opacity = '0';
+                setTimeout(() => { document.getElementById('loading-screen').style.display = 'none'; }, 1200);
+              }, 1800);
             }, 900);
           }
         }
         setTimeout(type, 700);
       });
+
       document.getElementById('info-modal').addEventListener('click', function(e) { if (e.target === this) closeInfo(); });
     })();
   </script>
